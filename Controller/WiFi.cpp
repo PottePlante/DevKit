@@ -15,7 +15,7 @@ void WiFi::run()
 {
     int socket_desc, c ,read_size;
     struct sockaddr_in server, client;
-    char client_message[5];
+    char client_message[30];
 
     //Creating socket
     socket_desc = socket(AF_INET , SOCK_STREAM , 0);
@@ -52,7 +52,7 @@ void WiFi::run()
             qDebug() << "Connection accepted";
 
         //Receive a message from client
-        while( (read_size = recv(client_sock_ , client_message , 5 , 0)) > 0 )
+        while( (read_size = recv(client_sock_ , client_message , 30 , 0)) > 0 )
         {
             handler(client_message);
         }
@@ -63,127 +63,68 @@ void WiFi::run()
 void WiFi::handler(char* cMsg)
 {
     PlantValues PV;
+    QString data_num;
+
     PV.id = cMsg[1];
 
-    QString data_num;
     data_num = cMsg[2] + cMsg[3] + cMsg[4];
+    PV.moisture = atoi(data_num.toStdString().c_str());
 
-    int temp = atoi(data_num.toStdString().c_str());
+    data_num = cMsg[7] + cMsg[8] + cMsg[9];
+    PV.water = atoi(data_num.toStdString().c_str());
 
-    switch (cMsg[0])            //kommer ikke til at virke!!!
-    {
-    case 'M':
-    {
-        PV.moisture = temp;
-        ctlPanel_->updatePlantValue(PV);
-        toSend_ = 'M';
-        break;
-    }
-    case 'W':
-    {
-        PV.water = temp;
-        ctlPanel_->updatePlantValue(PV);
-        toSend_ = 'W';
-        break;
-    }
-    case 'L':
-    {
-        PV.light = temp;
-        ctlPanel_->updatePlantValue(PV);
-        toSend_ = 'L';
-        break;
-    }
-    case 'T':
-    {
-        PV.tmp = temp;
-        ctlPanel_->updatePlantValue(PV);
-        toSend_ = 'T';
-        break;
-    }
-    case 'B':
-    {
-        PV.battery = temp;
-        ctlPanel_->updatePlantValue(PV);
-        toSend_ = 'B';
-        break;
-    }
-    case 'R':
-    {
-        PV.battery = temp;
-        ctlPanel_->updatePlantValue(PV);
-        toSend_ = 'R';
-        break;
-    }
-    default:
-        break;
-    }
+    data_num = cMsg[12] + cMsg[13] + cMsg[14];
+    PV.light = atoi(data_num.toStdString().c_str());
+
+    data_num = cMsg[17] + cMsg[18] + cMsg[19];
+    PV.tmp = atoi(data_num.toStdString().c_str());
+
+    data_num = cMsg[22] + cMsg[23] + cMsg[24];
+    PV.battery = atoi(data_num.toStdString().c_str());
+
+    ctlPanel_->updatePlantValue(&PV);
 }
 
 void WiFi::update(PlantValues PV)
 {
-    char data_send[5];
-
+    char data_send[30];
+    char data[3];
     char id[2];
+
     sprintf(id, "%d", PV.id);
-    data_send[0] = toSend_;
-    data_send[1] = id[0];
 
+    data_send[0] = 'M';
+    data_send[1] = id;
 
-    switch (toSend_) {
-    case 'M':
+    sprintf(data, "%d", PV.moisture_set);
+    if(PV.moisture_set > 99)
     {
-        char data[3];
-        sprintf(data, "%d", PV.moisture_set);
-
-        if(PV.moisture_set > 99)
-        {
-            data_send[2] = data[0];
-            data_send[3] = data[1];
-            data_send[4] = data[2];
-        }
-        else
-        {
-            data_send[2] = '0';
-            data_send[3] = data[0];
-            data_send[4] = data[1];
-        }
-
-        write(client_sock_, data_send, 5);
-
-        break;
+        data_send[2] = data[0];
+        data_send[3] = data[1];
+        data_send[4] = data[2];
     }
-    case 'R':
-    {
-        char data[3];
-        sprintf(data, "%d", PV.rotate_set);
-
-        if(PV.moisture_set > 99)
-        {
-            data_send[2] = data[0];
-            data_send[3] = data[1];
-            data_send[4] = data[2];
-        }
-        else
-        {
-            data_send[2] = '0';
-            data_send[3] = data[0];
-            data_send[4] = data[1];
-        }
-
-        write(client_sock_, data_send, 5);
-
-        break;
-    }
-    default:
+    else
     {
         data_send[2] = '0';
-        data_send[3] = '0';
-        data_send[4] = '0';
+        data_send[3] = data[0];
+        data_send[4] = data[1];
+    }
 
-        write(client_sock_, data_send, 5);
-        break;
+    sprintf(data, "%d", PV.rotate_set);
+    if(PV.rotate_set > 99)
+    {
+        data_send[2] = data[0];
+        data_send[3] = data[1];
+        data_send[4] = data[2];
     }
+    else
+    {
+        data_send[2] = '0';
+        data_send[3] = data[0];
+        data_send[4] = data[1];
     }
+
+    write(client_sock_, data_send, 30);
 
 }
 

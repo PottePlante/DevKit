@@ -11,7 +11,6 @@
 #include "Controlpanel.h"
 #include "Planteliste.h"
 #include "PlanteDatabase.h"
-//Mojn
 
 struct PlantValues;
 
@@ -26,11 +25,8 @@ public:
 
 private:
     Controlpanel* ctlPanel_;
-    char * buf_;
-    int busSize_;
     int port_;
     int client_sock_;
-    char toSend_;
     void handler(char* cMsg);
 };
 
