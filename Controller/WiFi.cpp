@@ -66,6 +66,7 @@ void WiFi::handler(char* cMsg)
     PlantValues PV;
     QString data_num;
     int id;
+    char tmp[4];
 
     data_num = cMsg[1];
     id = data_num.toInt();
@@ -76,28 +77,49 @@ void WiFi::handler(char* cMsg)
 
     qDebug() << "WiFi handler id: " << PV.id;
 
-    data_num = cMsg[2] + cMsg[3] + cMsg[4];
+    tmp[0] = cMsg[2];
+    tmp[1] = cMsg[3];
+    tmp[2] = cMsg[4];
+    tmp[3] = '\0';
+
+    data_num = tmp;
     qDebug() << data_num;
     PV.moisture = data_num.toInt();
 
     qDebug() << "WiFi handler moisture: " << PV.moisture;
 
-    data_num = cMsg[7] + cMsg[8] + cMsg[9];
+    tmp[0] = cMsg[7];
+    tmp[1] = cMsg[8];
+    tmp[2] = cMsg[9];
+    tmp[3] = '\0';
+    data_num = tmp;
     PV.water = data_num.toInt();
 
     qDebug() << "WiFi handler water: " << PV.water;
 
-    data_num = cMsg[12] + cMsg[13] + cMsg[14];
+    tmp[0] = cMsg[12];
+    tmp[1] = cMsg[13];
+    tmp[2] = cMsg[14];
+    tmp[3] = '\0';
+    data_num = tmp;
     PV.light = data_num.toInt();
 
     qDebug() << "WiFi handler light: " << PV.light;
 
-    data_num = cMsg[17] + cMsg[18] + cMsg[19];
+    tmp[0] = cMsg[17];
+    tmp[1] = cMsg[18];
+    tmp[2] = cMsg[19];
+    tmp[3] = '\0';
+    data_num = tmp;
     PV.tmp = data_num.toInt();
 
     qDebug() << "WiFi handler tmp: " << PV.tmp;
 
-    data_num = cMsg[22] + cMsg[23] + cMsg[24];
+    tmp[0] = cMsg[22];
+    tmp[1] = cMsg[23];
+    tmp[2] = cMsg[24];
+    tmp[3] = '\0';
+    data_num = tmp;
     PV.battery = data_num.toInt();
 
     qDebug() << "WiFi handler battery: " << PV.battery;

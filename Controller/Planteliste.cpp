@@ -99,12 +99,6 @@ bool Planteliste::update(PlantValues &PV)
     if(PV.plantInfo_id >= 0 && PV.plantInfo_id <= 999)
         if(!execUpdate("plantInfo_id", PV.plantInfo_id, PV.id)) { mutex_.unlock(); return false; }
 
-    else {
-        qDebug() << "dbUpdate err\n";
-        mutex_.unlock();
-        return false;
-    }
-
     mutex_.unlock();
     return true;
 }
