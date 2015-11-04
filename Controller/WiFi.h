@@ -11,6 +11,7 @@
 #include "Controlpanel.h"
 #include "Planteliste.h"
 #include "PlanteDatabase.h"
+//Mojn
 
 struct PlantValues;
 
