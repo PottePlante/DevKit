@@ -27,7 +27,7 @@ void WiFi::run()
     //Prepare the sockaddr_in structure
     server.sin_family = AF_INET;            //Listen interface
     server.sin_addr.s_addr = INADDR_ANY;    //Listen adress
-    server.sin_port = htons(port_);         //Lisen port
+    server.sin_port = htons(port_);         //Listen port
 
     //Bind to networkcard
     if( bind(socket_desc,(struct sockaddr *)&server , sizeof(server)) < 0)
@@ -97,7 +97,7 @@ void WiFi::update(PlantValues PV)
     sprintf(id, "%d", PV.id);
 
     data_send[0] = 'M';
-    data_send[1] = id;
+    data_send[1] = id[0];
 
     sprintf(data, "%d", PV.moisture_set);
     if(PV.moisture_set > 99)
@@ -114,7 +114,7 @@ void WiFi::update(PlantValues PV)
     }
 
     data_send[5] = 'R';
-    data_send[6] = id;
+    data_send[6] = id[0];
 
     sprintf(data, "%d", PV.rotate_set);
     if(PV.rotate_set > 99)
