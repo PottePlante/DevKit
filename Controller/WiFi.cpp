@@ -131,7 +131,7 @@ void WiFi::handler(char* cMsg)
 void WiFi::update(PlantValues PV)
 {
     qDebug() << "WiFi update start";
-    char data_send[30];
+    char data_send[10];
     char data[3];
     char id[2];
 
@@ -145,6 +145,7 @@ void WiFi::update(PlantValues PV)
 
 
     sprintf(data, "%d", PV.moisture_set);
+    qDebug() << "Moisture_set: " <<PV.moisture_set << "=" << data[0] << data[1] << data[2];
     if(PV.moisture_set > 99)
     {
         data_send[2] = data[0];
@@ -178,7 +179,7 @@ void WiFi::update(PlantValues PV)
     for(int i=0; i<30; i++)
         qDebug() << data_send[i];
 
-    write(client_sock_, data_send, 30);
+    write(client_sock_, data_send, 10);
 
 }
 
