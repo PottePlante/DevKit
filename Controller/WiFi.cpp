@@ -68,7 +68,7 @@ void WiFi::handler(char* cMsg)
     int id;
 
     data_num = cMsg[1];
-    id = atoi(data_num.toStdString().c_str());
+    id = data_num.toInt();
     if(id >=0)
         PV.id = id;
     else
@@ -78,27 +78,27 @@ void WiFi::handler(char* cMsg)
 
     data_num = cMsg[2] + cMsg[3] + cMsg[4];
     qDebug() << data_num;
-    PV.moisture = atoi(data_num.toStdString().c_str());
+    PV.moisture = data_num.toInt();
 
     qDebug() << "WiFi handler moisture: " << PV.moisture;
 
     data_num = cMsg[7] + cMsg[8] + cMsg[9];
-    PV.water = atoi(data_num.toStdString().c_str());
+    PV.water = data_num.toInt();
 
     qDebug() << "WiFi handler water: " << PV.water;
 
     data_num = cMsg[12] + cMsg[13] + cMsg[14];
-    PV.light = atoi(data_num.toStdString().c_str());
+    PV.light = data_num.toInt();
 
     qDebug() << "WiFi handler light: " << PV.light;
 
     data_num = cMsg[17] + cMsg[18] + cMsg[19];
-    PV.tmp = atoi(data_num.toStdString().c_str());
+    PV.tmp = data_num.toInt();
 
     qDebug() << "WiFi handler tmp: " << PV.tmp;
 
     data_num = cMsg[22] + cMsg[23] + cMsg[24];
-    PV.battery = atoi(data_num.toStdString().c_str());
+    PV.battery = data_num.toInt();
 
     qDebug() << "WiFi handler battery: " << PV.battery;
 
