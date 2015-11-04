@@ -70,7 +70,7 @@ void WiFi::handler(char* cMsg)
     data_num = cMsg[1];
     id = atoi(data_num.toStdString().c_str());
     if(id >=0)
-        PV.id = cMsg[1];
+        PV.id = id;
     else
         PV.id = -1;
 
