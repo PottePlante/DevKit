@@ -62,7 +62,7 @@ void WiFi::run()
 
 void WiFi::handler(char* cMsg)
 {
-    qDebug() << "WiFi handler start\n";
+    qDebug() << "WiFi handler start";
     PlantValues PV;
     QString data_num;
     int id;
@@ -74,40 +74,41 @@ void WiFi::handler(char* cMsg)
     else
         PV.id = -1;
 
-    qDebug() << "WiFi handler id: " << PV.id << "\n";
+    qDebug() << "WiFi handler id: " << PV.id;
 
     data_num = cMsg[2] + cMsg[3] + cMsg[4];
+    qDebug() << data_num;
     PV.moisture = atoi(data_num.toStdString().c_str());
 
-    qDebug() << "WiFi handler moisture: " << PV.moisture << "\n";
+    qDebug() << "WiFi handler moisture: " << PV.moisture;
 
     data_num = cMsg[7] + cMsg[8] + cMsg[9];
     PV.water = atoi(data_num.toStdString().c_str());
 
-    qDebug() << "WiFi handler water: " << PV.water << "\n";
+    qDebug() << "WiFi handler water: " << PV.water;
 
     data_num = cMsg[12] + cMsg[13] + cMsg[14];
     PV.light = atoi(data_num.toStdString().c_str());
 
-    qDebug() << "WiFi handler light: " << PV.light << "\n";
+    qDebug() << "WiFi handler light: " << PV.light;
 
     data_num = cMsg[17] + cMsg[18] + cMsg[19];
     PV.tmp = atoi(data_num.toStdString().c_str());
 
-    qDebug() << "WiFi handler tmp: " << PV.tmp << "\n";
+    qDebug() << "WiFi handler tmp: " << PV.tmp;
 
     data_num = cMsg[22] + cMsg[23] + cMsg[24];
     PV.battery = atoi(data_num.toStdString().c_str());
 
-    qDebug() << "WiFi handler battery: " << PV.battery << "\n";
+    qDebug() << "WiFi handler battery: " << PV.battery;
 
     ctlPanel_->updatePlantValue(PV);
-    qDebug() << "WiFi handler done\n";
+    qDebug() << "WiFi handler done";
 }
 
 void WiFi::update(PlantValues PV)
 {
-    qDebug() << "WiFi update start\n";
+    qDebug() << "WiFi update start";
     char data_send[30];
     char data[3];
     char id[2];
@@ -150,7 +151,7 @@ void WiFi::update(PlantValues PV)
         data_send[9] = data[1];
     }
 
-    qDebug() << "Sender til PSoC :)\n";
+    qDebug() << "Sender til PSoC :)";
 
     for(int i=0; i<30; i++)
         qDebug() << data_send[i];
