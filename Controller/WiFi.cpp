@@ -20,9 +20,9 @@ void WiFi::run()
     //Creating socket
     socket_desc = socket(AF_INET , SOCK_STREAM , 0);
     if (socket_desc == -1)
-        qDebug() <<"Could not create socket\n";
+        qDebug() <<"Could not create socket";
     else
-        qDebug() << "Socket created\n";
+        qDebug() << "Socket created";
 
     //Prepare the sockaddr_in structure
     server.sin_family = AF_INET;            //Listen interface
@@ -31,9 +31,9 @@ void WiFi::run()
 
     //Bind to networkcard
     if( bind(socket_desc,(struct sockaddr *)&server , sizeof(server)) < 0)
-        qDebug() << "bind failed. Error\n";
+        qDebug() << "bind failed. Error";
     else
-        qDebug() << "bind done\n";
+        qDebug() << "bind done";
 
     //Start listen for incoming connection
     listen(socket_desc, 1);
@@ -42,7 +42,7 @@ void WiFi::run()
 
     for(;;)
     {
-        qDebug() << "Waiting for incoming connections...\n";
+        qDebug() << "Waiting for incoming connections...";
 
         //Accept connection from an incoming client
         client_sock_ = accept(socket_desc, (struct sockaddr *)&client, (socklen_t*)&c);
