@@ -62,6 +62,7 @@ void WiFi::run()
 
 void WiFi::handler(char* cMsg)
 {
+    qDebug() << "WiFi handler start\n";
     PlantValues PV;
     QString data_num;
 
@@ -83,10 +84,12 @@ void WiFi::handler(char* cMsg)
     PV.battery = atoi(data_num.toStdString().c_str());
 
     ctlPanel_->updatePlantValue(&PV);
+    qDebug() << "WiFi handler done\n";
 }
 
 void WiFi::update(PlantValues PV)
 {
+    qDebug() << "WiFi update start\n";
     char data_send[30];
     char data[3];
     char id[2];
@@ -127,6 +130,7 @@ void WiFi::update(PlantValues PV)
         data_send[9] = data[1];
     }
 
+    qDebug() << "Sender til PSoC :)\n";
     write(client_sock_, data_send, 30);
 
 }
