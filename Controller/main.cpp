@@ -11,15 +11,13 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
     PlanteDatabase pd;
     Planteliste pl;
-    WiFi wf;
+    //WiFi wf;
     Touchscreen ui;
 
-    //database testdb;
-    //tcpSocket* testtcp = new tcpSocket(&testdb, 8888);
+    WiFi* wf = new WiFi();
 
-    //QThreadPool::globalInstance()->start(testtcp);
-
-    Controlpanel(&pd, &pl, &ui, &wf, false);
+    Controlpanel ctl(&pd, &pl, &ui, wf, false);
+    QThreadPool::globalInstance()->start(wf);
 
     return a.exec();
 }
