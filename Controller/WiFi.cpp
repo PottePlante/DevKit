@@ -110,18 +110,21 @@ void WiFi::update(PlantValues PV)
         data_send[4] = data[1];
     }
 
+    data_send[5] = 'R';
+    data_send[6] = id;
+
     sprintf(data, "%d", PV.rotate_set);
     if(PV.rotate_set > 99)
     {
-        data_send[2] = data[0];
-        data_send[3] = data[1];
-        data_send[4] = data[2];
+        data_send[7] = data[0];
+        data_send[8] = data[1];
+        data_send[9] = data[2];
     }
     else
     {
-        data_send[2] = '0';
-        data_send[3] = data[0];
-        data_send[4] = data[1];
+        data_send[7] = '0';
+        data_send[8] = data[0];
+        data_send[9] = data[1];
     }
 
     write(client_sock_, data_send, 30);
