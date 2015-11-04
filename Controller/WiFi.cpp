@@ -20,9 +20,9 @@ void WiFi::run()
     //Creating socket
     socket_desc = socket(AF_INET , SOCK_STREAM , 0);
     if (socket_desc == -1)
-        qDebug() <<"Could not create socket\n";
+        qDebug() <<"Could not create socket";
     else
-        qDebug() << "Socket created\n";
+        qDebug() << "Socket created";
 
     //Prepare the sockaddr_in structure
     server.sin_family = AF_INET;            //Listen interface
@@ -31,9 +31,9 @@ void WiFi::run()
 
     //Bind to networkcard
     if( bind(socket_desc,(struct sockaddr *)&server , sizeof(server)) < 0)
-        qDebug() << "bind failed. Error\n";
+        qDebug() << "bind failed. Error";
     else
-        qDebug() << "bind done\n";
+        qDebug() << "bind done";
 
     //Start listen for incoming connection
     listen(socket_desc, 1);
@@ -42,7 +42,7 @@ void WiFi::run()
 
     for(;;)
     {
-        qDebug() << "Waiting for incoming connections...\n";
+        qDebug() << "Waiting for incoming connections...";
 
         //Accept connection from an incoming client
         client_sock_ = accept(socket_desc, (struct sockaddr *)&client, (socklen_t*)&c);
@@ -62,52 +62,53 @@ void WiFi::run()
 
 void WiFi::handler(char* cMsg)
 {
-    qDebug() << "WiFi handler start\n";
+    qDebug() << "WiFi handler start";
     PlantValues PV;
     QString data_num;
     int id;
 
     data_num = cMsg[1];
-    id = atoi(data_num.toStdString().c_str());
+    id = data_num.toInt();
     if(id >=0)
         PV.id = id;
     else
         PV.id = -1;
 
-    qDebug() << "WiFi handler id: " << PV.id << "\n";
+    qDebug() << "WiFi handler id: " << PV.id;
 
     data_num = cMsg[2] + cMsg[3] + cMsg[4];
-    PV.moisture = atoi(data_num.toStdString().c_str());
+    qDebug() << data_num;
+    PV.moisture = data_num.toInt();
 
-    qDebug() << "WiFi handler moisture: " << PV.moisture << "\n";
+    qDebug() << "WiFi handler moisture: " << PV.moisture;
 
     data_num = cMsg[7] + cMsg[8] + cMsg[9];
-    PV.water = atoi(data_num.toStdString().c_str());
+    PV.water = data_num.toInt();
 
-    qDebug() << "WiFi handler water: " << PV.water << "\n";
+    qDebug() << "WiFi handler water: " << PV.water;
 
     data_num = cMsg[12] + cMsg[13] + cMsg[14];
-    PV.light = atoi(data_num.toStdString().c_str());
+    PV.light = data_num.toInt();
 
-    qDebug() << "WiFi handler light: " << PV.light << "\n";
+    qDebug() << "WiFi handler light: " << PV.light;
 
     data_num = cMsg[17] + cMsg[18] + cMsg[19];
-    PV.tmp = atoi(data_num.toStdString().c_str());
+    PV.tmp = data_num.toInt();
 
-    qDebug() << "WiFi handler tmp: " << PV.tmp << "\n";
+    qDebug() << "WiFi handler tmp: " << PV.tmp;
 
     data_num = cMsg[22] + cMsg[23] + cMsg[24];
-    PV.battery = atoi(data_num.toStdString().c_str());
+    PV.battery = data_num.toInt();
 
-    qDebug() << "WiFi handler battery: " << PV.battery << "\n";
+    qDebug() << "WiFi handler battery: " << PV.battery;
 
     ctlPanel_->updatePlantValue(PV);
-    qDebug() << "WiFi handler done\n";
+    qDebug() << "WiFi handler done";
 }
 
 void WiFi::update(PlantValues PV)
 {
-    qDebug() << "WiFi update start\n";
+    qDebug() << "WiFi update start";
     char data_send[30];
     char data[3];
     char id[2];
@@ -150,7 +151,7 @@ void WiFi::update(PlantValues PV)
         data_send[9] = data[1];
     }
 
-    qDebug() << "Sender til PSoC :)\n";
+    qDebug() << "Sender til PSoC :)";
 
     for(int i=0; i<30; i++)
         qDebug() << data_send[i];
