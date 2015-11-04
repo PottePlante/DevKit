@@ -65,23 +65,41 @@ void WiFi::handler(char* cMsg)
     qDebug() << "WiFi handler start\n";
     PlantValues PV;
     QString data_num;
+    int id;
 
-    PV.id = cMsg[1];
+    data_num = cMsg[1];
+    id = atoi(data_num.toStdString().c_str());
+    if(id >=0)
+        PV.id = cMsg[1];
+    else
+        PV.id = -1;
+
+    qDebug() << "WiFi handler id: " << PV.id << "\n";
 
     data_num = cMsg[2] + cMsg[3] + cMsg[4];
     PV.moisture = atoi(data_num.toStdString().c_str());
 
+    qDebug() << "WiFi handler moisture: " << PV.moisture << "\n";
+
     data_num = cMsg[7] + cMsg[8] + cMsg[9];
     PV.water = atoi(data_num.toStdString().c_str());
+
+    qDebug() << "WiFi handler water: " << PV.water << "\n";
 
     data_num = cMsg[12] + cMsg[13] + cMsg[14];
     PV.light = atoi(data_num.toStdString().c_str());
 
+    qDebug() << "WiFi handler light: " << PV.light << "\n";
+
     data_num = cMsg[17] + cMsg[18] + cMsg[19];
     PV.tmp = atoi(data_num.toStdString().c_str());
 
+    qDebug() << "WiFi handler tmp: " << PV.tmp << "\n";
+
     data_num = cMsg[22] + cMsg[23] + cMsg[24];
     PV.battery = atoi(data_num.toStdString().c_str());
+
+    qDebug() << "WiFi handler battery: " << PV.battery << "\n";
 
     ctlPanel_->updatePlantValue(&PV);
     qDebug() << "WiFi handler done\n";
@@ -99,6 +117,10 @@ void WiFi::update(PlantValues PV)
     data_send[0] = 'M';
     data_send[1] = id[0];
 
+    data_send[5] = 'R';
+    data_send[6] = id[0];
+
+
     sprintf(data, "%d", PV.moisture_set);
     if(PV.moisture_set > 99)
     {
@@ -113,8 +135,6 @@ void WiFi::update(PlantValues PV)
         data_send[4] = data[1];
     }
 
-    data_send[5] = 'R';
-    data_send[6] = id[0];
 
     sprintf(data, "%d", PV.rotate_set);
     if(PV.rotate_set > 99)
@@ -131,6 +151,10 @@ void WiFi::update(PlantValues PV)
     }
 
     qDebug() << "Sender til PSoC :)\n";
+
+    for(int i=0; i<30; i++)
+        qDebug() << data_send[i];
+
     write(client_sock_, data_send, 30);
 
 }
