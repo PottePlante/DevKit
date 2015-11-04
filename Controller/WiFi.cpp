@@ -101,7 +101,7 @@ void WiFi::handler(char* cMsg)
 
     qDebug() << "WiFi handler battery: " << PV.battery << "\n";
 
-    ctlPanel_->updatePlantValue(&PV);
+    ctlPanel_->updatePlantValue(PV);
     qDebug() << "WiFi handler done\n";
 }
 

@@ -28,15 +28,15 @@ Planteliste::~Planteliste()
     closeDB();
 }
 
-void Planteliste::add(PlanteInfo &PI)
+bool Planteliste::add(PlantValues &pV)
 {
     mutex_.lock();
     QSqlQuery query;
     query.prepare("INSERT OR IGNORE INTO plantelist (moisture_set, rotate_set) "
                   "VALUES(:moisture_set, :rotate);");
 
-    query.bindValue(":moisture_set", PI.moisture);
-    query.bindValue(":rotate", PI.rotate);
+    query.bindValue(":moisture_set", pV.moisture_set);
+    query.bindValue(":rotate", pV.rotate_set);
     if(query.exec())
         qDebug() << "dbAdd OK\n";
     else
@@ -45,11 +45,12 @@ void Planteliste::add(PlanteInfo &PI)
         return false;
     }
 
-   PI.id = query.lastInsertId().toInt();
+   pV.id = query.lastInsertId().toInt();
    mutex_.unlock();
+   return true;
 }
 
-bool Planteliste::remove(const int id)
+bool Planteliste::remove(const int &id)
 {
     mutex_.lock();
     QSqlQuery query;
@@ -108,7 +109,7 @@ bool Planteliste::update(PlantValues &PV)
     return true;
 }
 
-PlantValues Planteliste::get(const int &id) const
+PlantValues Planteliste::get(const int &id)
 {
     mutex_.lock();
     QSqlQuery query;
@@ -148,7 +149,7 @@ PlantValues Planteliste::get(const int &id) const
     return temp;
 }
 
-vector<PlantValues> Planteliste::getAll()const
+vector<PlantValues> Planteliste::getAll()
 {
     mutex_.lock();
     vector<PlantValues> temp;
@@ -162,7 +163,7 @@ vector<PlantValues> Planteliste::getAll()const
         qDebug() << "dbGet err! \n";
 
     while(query.next())
-        temp.push_back(dbGet(query.value(0).toInt()));
+        temp.push_back(get(query.value(0).toInt()));
 
     mutex_.unlock();
     return temp;

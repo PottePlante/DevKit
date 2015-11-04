@@ -1,0 +1,11 @@
+#!/bin/bash
+# blah
+cd ~/semester3_projekt/git/Controller/
+git add Controlpanel.*
+git add main.cpp
+git add plantitems_ui.*
+git add touchscreen.*
+git commit -m "$1"
+git pull
+git push
+
