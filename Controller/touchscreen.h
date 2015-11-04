@@ -40,6 +40,8 @@ private slots:
 
     void on_get_status_button_clicked();
 
+    void on_plant_combobox_currentIndexChanged(int index);
+
 private:
     std::vector<pos_combo> plant_pos;
     std::vector<pos_combo> type_pos;

@@ -19,7 +19,7 @@ int main(int argc, char *argv[])
 
     //QThreadPool::globalInstance()->start(testtcp);
 
-    Controlpanel(&pd, &pl, &ui, &wf, true);
+    Controlpanel(&pd, &pl, &ui, &wf, false);
 
     return a.exec();
 }

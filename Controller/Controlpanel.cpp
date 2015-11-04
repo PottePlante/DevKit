@@ -13,7 +13,7 @@ using namespace std;
 Controlpanel::Controlpanel(PlanteDatabase *database, Planteliste *list, Touchscreen *ui, WiFi *wifi, bool test)
     :database_(database), list_(list), ui_(ui), wifi_(wifi)
 {
-    if(test)//det er kun til test
+    if(test)
     {
         vector<PlantValues> pV_vec;
         vector<PlanteInfo> pI_vec;
@@ -81,6 +81,20 @@ const std::vector<PlanteInfo> Controlpanel::getPlantInfo() const
 {
     return database_->getAll();
 }
+
+PlantValues Controlpanel::getPlantValue(int id)
+{
+    return list_->get(id);
+}
+
+
+PlanteInfo Controlpanel::getPlantInfo(int id)
+{
+    return database_->get(id);
+}
+
+
+
 
 bool Controlpanel::updatePlantValue(PlantValues pV)
 {

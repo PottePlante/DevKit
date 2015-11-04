@@ -3,6 +3,7 @@
 #include "PlanteDatabase.h"
 #include "Planteliste.h"
 #include "plantitems_ui.h"
+#include "Controlpanel.h"
 #include <QProcess>
 
 
@@ -16,8 +17,8 @@ Touchscreen::Touchscreen(QWidget *parent) :
     ui(new Ui::Touchscreen)
 {
     ui->setupUi(this);
-    //setWindowFlags(Qt::CustomizeWindowHint);
-    //QWidget::showFullScreen();
+    setWindowFlags(Qt::CustomizeWindowHint);
+    QWidget::showFullScreen();
 
     space_ = new QSpacerItem(120, 50);
 
@@ -176,5 +177,37 @@ void Touchscreen::on_get_status_button_clicked()
     QString tmp = process->readAll();
     ui->Status_msg->setPlainText(tmp);
     //ui->label->setText(tmp);
+
+}
+
+void Touchscreen::on_plant_combobox_currentIndexChanged(int index)
+{
+    int id = -1;
+    for(int i = 0; i < plant_pos.size(); i++)
+    {
+        if(plant_pos[i].pos == index)
+        {
+            id = plant_pos[i].id;
+            break;
+        }
+    }
+
+    if(id==-1)
+        return;
+
+    PlantValues pv = ctlPanel_->getPlantValue(id);
+    PlanteInfo pi = ctlPanel_->getPlantInfo(pv.plantInfo_id);
+
+    int info_pos = -1;
+
+    for(int i = 0; i < type_pos.size(); i++)
+    {
+        if(pi.id==type_pos[i].id)
+        {
+            ui->type_combobox->setCurrentIndex(type_pos[i].pos);
+        }
+    }
+
+
 
 }

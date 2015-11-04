@@ -26,6 +26,8 @@ public:
     void changePlant(PlantValues);
     const std::vector<PlanteInfo> getPlantInfo() const;
     bool updatePlantValue(PlantValues);
+    PlantValues getPlantValue(int id);
+    PlanteInfo getPlantInfo(int id);
 
 private:
 
