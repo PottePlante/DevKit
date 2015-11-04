@@ -10,15 +10,17 @@
 #include <QGraphicsScene>
 #include "PlanteDatabase.h"
 #include "Planteliste.h"
-
+#include <QDebug>
 
 PlantItems_ui::PlantItems_ui(PlanteInfo pI, PlantValues pV)
     :id_(-1)
 {
-
+    qDebug() << "new plantItem_ui plant id:"<<pV.id<<" type id:"<<pI.id;
     if(pV.id == -1)
+    {
+         qDebug() << "error! plantItem_ui plant id:"<<pV.id<<" type id:"<<pI.id;
         return;
-
+    }
     id_ = pV.id;
 
     box_ = new QGroupBox(pI.name + " id: " + QString::number(pV.id));
@@ -59,7 +61,7 @@ PlantItems_ui::PlantItems_ui(PlanteInfo pI, PlantValues pV)
     //layout_->addStretch(1);
 
     box_->setLayout(layout_);
-
+    qDebug() << "done plantItem_ui plant id:"<<pV.id<<" type id:"<<pI.id;
 
 }
 
@@ -69,6 +71,7 @@ PlantItems_ui::~PlantItems_ui()
     delete box_;
     delete text_;
     delete water_;
+    qDebug() << "remove plantItem_ui id:"<<id_;
 }
 
 int PlantItems_ui::getId() const
@@ -83,12 +86,17 @@ QGroupBox* PlantItems_ui::get() const
 
 bool PlantItems_ui::update(PlanteInfo pI, PlantValues pV)
 {
+    qDebug() << "update plantItem_ui id:"<<id_;
     if(pV.id != id_)
+    {
+        qDebug() << "error";
         return false;
+    }
 
     box_->setTitle(pI.name + " id: " + QString::number(pV.id));
 
     water_->setValue(pV.water);
+    qDebug() << "done";
     return true;
 }
 
