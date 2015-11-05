@@ -5,24 +5,29 @@
 #include <sys/socket.h>
 #include <arpa/inet.h>
 #include <unistd.h>
-#include <QtCore>
 #include <QDebug>
 #include <QString>
-#include "Controlpanel.h"
+#include <QObject>
+#include <QThread>
 #include "Planteliste.h"
 #include "PlanteDatabase.h"
 
-struct PlantValues;
+class Controlpanel;
 
-class WiFi : public QRunnable
+class WiFi : public QObject
 {
+    Q_OBJECT
 public:
     WiFi(int port = 8888);
 
     void init(Controlpanel * CP);
-    void run();
+
     void update(PlantValues);
 
+private slots:
+    void run();
+//signals:
+//    void newData(PlantValues);
 private:
     Controlpanel* ctlPanel_;
     int port_;

@@ -13,11 +13,10 @@ int main(int argc, char *argv[])
     Planteliste pl;
     //WiFi wf;
     Touchscreen ui;
+    WiFi wf;
 
-    WiFi* wf = new WiFi();
-
-    Controlpanel ctl(&pd, &pl, &ui, wf, false);
-    QThreadPool::globalInstance()->start(wf);
+    Controlpanel ctl(&pd, &pl, &ui, &wf, false);
+    //QThreadPool::globalInstance()->start(wf); bruger QObject til at køre en anden tråd med.
 
     return a.exec();
 }

@@ -3,11 +3,13 @@
 
 #include <QMainWindow>
 #include <vector>
+#include "PlanteDatabase.h"
+#include "Planteliste.h"
 
 
 //prototyper
-struct PlantValues;
-struct PlanteInfo;
+//struct PlantValues;
+//struct PlanteInfo;
 
 struct ui_plant_item;
 class Controlpanel;
@@ -34,8 +36,11 @@ public:
     explicit Touchscreen(QWidget *parent = 0);
     ~Touchscreen();
     void init(Controlpanel*, std::vector<PlanteInfo> pI_vec, std::vector<PlantValues> pV_vec);
-    void update(PlanteInfo, PlantValues);
+
 private slots:
+
+    void update(PlanteInfo, PlantValues);
+
     void on_test_add_clicked();
 
     void on_get_status_button_clicked();

@@ -12,16 +12,16 @@ TARGET = Controller
 TEMPLATE = app
 
 
-SOURCES += main.cpp\
-        touchscreen.cpp \
+SOURCES += WiFi.cpp \
+    main.cpp\
+    touchscreen.cpp \
     Controlpanel.cpp \
     PlanteDatabase.cpp \
-    WiFi.cpp \
     plantitems_ui.cpp \
     Planteliste.cpp
 
-HEADERS  += touchscreen.h \
-    WiFi.h \
+HEADERS  += WiFi.h \
+    touchscreen.h \
     PlanteDatabase.h \
     Controlpanel.h \
     plantitems_ui.h \
