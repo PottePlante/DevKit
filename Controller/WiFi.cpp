@@ -1,10 +1,11 @@
 #include "WiFi.h"
+#include "Controlpanel.h"
+
 using namespace std;
 
-WiFi::WiFi(int port)
-{
-    port_ = port;
-}
+WiFi::WiFi(int port):
+    port_(port)
+{}
 
 void WiFi::init(Controlpanel * CP)
 {

@@ -1,19 +1,14 @@
 #include "Controlpanel.h"
-#include "PlanteDatabase.h"
-#include "Planteliste.h"
 #include "touchscreen.h"
 #include "WiFi.h"
-#include <algorithm>
-#include <iterator>
-#include <QDebug>
 
 using namespace std;
-
 
 
 Controlpanel::Controlpanel(PlanteDatabase *database, Planteliste *list, Touchscreen *ui, WiFi *wifi, bool test)
     :database_(database), list_(list), ui_(ui), wifi_(wifi)
 {
+
     if(test)
     {
         qDebug() << "Contolpanel : run test";
@@ -48,7 +43,6 @@ Controlpanel::Controlpanel(PlanteDatabase *database, Planteliste *list, Touchscr
                 .rotate_set = rand()%100,
                 .plantInfo_id = rand()%2
             };
-            pv_tmp.id;
             pV_vec.push_back(pv_tmp);
         }
         ui_->init(this, pI_vec, pV_vec);
@@ -59,15 +53,24 @@ Controlpanel::Controlpanel(PlanteDatabase *database, Planteliste *list, Touchscr
         ui_->init(this, database_->getAll(), list_->getAll());
     }
 
+    //sæt wifi op
     wifi_->init(this);
+
+
+    qRegisterMetaType<PlantValues>("PlantValues");
+    qRegisterMetaType<PlanteInfo>("PlanteInfo");
+
+
+    QThread *workerThread = new QThread;
+
+    wifi_->moveToThread(workerThread);
+    connect(workerThread, SIGNAL(started()), wifi_, SLOT(run()));
+    connect(this, SIGNAL(guiUpdate(PlanteInfo, PlantValues)), ui_, SLOT(update(PlanteInfo, PlantValues)));
+    workerThread->start();
 
     ui_->show();
     qDebug() << "Contolpanel : init complete";
 }
-
-Controlpanel::~Controlpanel()
-{}
-
 
 
 void Controlpanel::removePlant(int id)
@@ -103,7 +106,7 @@ PlanteInfo Controlpanel::getPlantInfo(int id)
 
 
 
-bool Controlpanel::updatePlantValue(PlantValues pV)
+void Controlpanel::updatePlantValue(PlantValues pV)
 {
     qDebug() << "Contolpanel : update plant id:"<<pV.id;
     PlantValues newpV = pV;
@@ -122,15 +125,18 @@ bool Controlpanel::updatePlantValue(PlantValues pV)
         if(!list_->update(newpV))
         {
             qDebug() << "Contolpanel : error plant not updated. plant id:"<<newpV.id;
-            return false;
+            return;
         }
 
     }
      qDebug() << "Contolpanel : wifi update plant id:"<<newpV.id;
     wifi_->update(newpV);
      qDebug() << "Contolpanel : gui update plant id:"<<newpV.id;
-    ui_->update(database_->get(newpV.plantInfo_id), newpV);
+
+
+    emit guiUpdate(database_->get(newpV.plantInfo_id), newpV);
+    //ui_->update(database_->get(newpV.plantInfo_id), newpV);
 
     qDebug() << "Contolpanel : update done id:"<<newpV.id;
-    return true;
+    return;
 }

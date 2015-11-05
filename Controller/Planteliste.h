@@ -1,9 +1,9 @@
 #ifndef PLANTELISTE_H
 #define PLANTELISTE_H
 #include <vector>
+#include <QMutex>
 
 struct PlanteInfo;
-class QMutex;
 
 struct PlantValues
 {

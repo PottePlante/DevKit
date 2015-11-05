@@ -145,7 +145,7 @@ PlantValues Planteliste::get(const int &id)
 
 vector<PlantValues> Planteliste::getAll()
 {
-    mutex_.lock();
+   mutex_.lock();
     vector<PlantValues> temp;
     QSqlQuery query;
 

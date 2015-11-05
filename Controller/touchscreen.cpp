@@ -1,7 +1,6 @@
 #include "touchscreen.h"
 #include "ui_touchscreen.h"
-#include "PlanteDatabase.h"
-#include "Planteliste.h"
+
 #include "plantitems_ui.h"
 #include "Controlpanel.h"
 #include <QProcess>
@@ -17,8 +16,8 @@ Touchscreen::Touchscreen(QWidget *parent) :
     ui(new Ui::Touchscreen)
 {
     ui->setupUi(this);
-    setWindowFlags(Qt::CustomizeWindowHint);
-    QWidget::showFullScreen();
+    //setWindowFlags(Qt::CustomizeWindowHint);
+    //QWidget::showFullScreen();
 
     space_ = new QSpacerItem(120, 50);
     qDebug() << "touchscreen : running";
@@ -118,9 +117,7 @@ void Touchscreen::init(Controlpanel *ctlPanel, vector<PlanteInfo> pI_vec, vector
         uint i2 = 0;
         for(i2; i2 < pI_vec.size(); i2++)
         {
-            int tmp1, tmp2;
-            tmp1 = pI_vec[i2].id;
-            tmp2 = pV_vec[i].plantInfo_id;
+
             if(pV_vec[i].plantInfo_id==pI_vec[i2].id)
             {
                 update(pI_vec[i2], pV_vec[i]);

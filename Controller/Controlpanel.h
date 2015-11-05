@@ -2,32 +2,34 @@
 #define CONTROLPANEL_H
 
 #include <vector>
+#include <QObject>
+#include <QThread>
+#include <algorithm>
+#include <iterator>
+#include <QDebug>
+#include "PlanteDatabase.h"
+#include "Planteliste.h"
 
-//prototyper
-struct PlantValues;
-struct PlanteInfo;
 
-class PlanteDatabase;
-class Planteliste;
-class Touchscreen;
 class WiFi;
+class Touchscreen;
 
-//
-
-
-class Controlpanel
+class Controlpanel : public QObject
 {
+    Q_OBJECT
 public:
-    Controlpanel(PlanteDatabase*, Planteliste*, Touchscreen*, WiFi*, bool test = false);
-    ~Controlpanel();
+    Controlpanel(PlanteDatabase*, Planteliste*, Touchscreen*, WiFi* ,bool test = false);
 
     bool updataPlanteInfo(PlantValues);
     void removePlant(int id);
     void changePlant(PlantValues);
     const std::vector<PlanteInfo> getPlantInfo() const;
-    bool updatePlantValue(PlantValues);
+
     PlantValues getPlantValue(int id);
     PlanteInfo getPlantInfo(int id);
+    void updatePlantValue(PlantValues);
+signals:
+    void guiUpdate(PlanteInfo, PlantValues);
 
 private:
 
