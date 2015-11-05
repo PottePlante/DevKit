@@ -35,6 +35,7 @@ private:
     void openDB();
     void setupDB();
     void closeDB();
+    QSqlDatabase db;
     QMutex mutex_;
 };
 

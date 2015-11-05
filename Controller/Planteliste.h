@@ -2,6 +2,7 @@
 #define PLANTELISTE_H
 #include <vector>
 #include <QMutex>
+#include <QSqlDatabase>
 
 struct PlanteInfo;
 

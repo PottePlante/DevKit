@@ -67,7 +67,7 @@ vector<PlanteInfo> PlanteDatabase::getAll()
 
 void PlanteDatabase::openDB()
 {
-    QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE", "PD");
+    db = QSqlDatabase::addDatabase("QSQLITE", "PD");
     db.setDatabaseName("./planteDatabase.sqlite");
 
     if (!db.open())
@@ -99,6 +99,5 @@ void PlanteDatabase::setupDB()
 
 void PlanteDatabase::closeDB()
 {
-    QSqlDatabase db;
     db.close();
 }
