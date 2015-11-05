@@ -18,7 +18,7 @@ PlanteInfo PlanteDatabase::get(const int &id)
     QSqlQuery query;
     PlanteInfo temp;
 
-    query.prepare("SELECT * FROM planteDatabase WHERE id = :id;");
+    query.prepare("SELECT * FROM PD.planteDatabase WHERE id = :id;");
     query.bindValue(":id", id);
 
     if(query.exec())
@@ -51,7 +51,7 @@ vector<PlanteInfo> PlanteDatabase::getAll()
     vector<PlanteInfo> temp;
     QSqlQuery query;
 
-    query.prepare("SELECT id FROM plantelist;");
+    query.prepare("SELECT id FROM PD.plantelist;");
 
     if(query.exec())
         qDebug() << "dbGet OK\n";
@@ -67,7 +67,7 @@ vector<PlanteInfo> PlanteDatabase::getAll()
 
 void PlanteDatabase::openDB()
 {
-    QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE", "PlanteDatabase");
+    QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE", "PD");
     db.setDatabaseName("./planteDatabase.sqlite");
 
     if (!db.open())
@@ -81,7 +81,8 @@ void PlanteDatabase::openDB()
 void PlanteDatabase::setupDB()
 {
     QSqlQuery query;
-    query.prepare("CREATE TABLE IF NOT EXISTS planteDatabase("
+
+    query.prepare("CREATE TABLE IF NOT EXISTS PD.planteDatabase("
                         "id INTEGER PRIMARY KEY AUTOINCREMENT, "
                         "moisture INT,"
                         "rotate INT,"

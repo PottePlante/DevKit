@@ -32,7 +32,7 @@ bool Planteliste::add(PlantValues &pV)
 {
     mutex_.lock();
     QSqlQuery query;
-    query.prepare("INSERT OR IGNORE INTO plantelist (moisture_set, rotate_set) "
+    query.prepare("INSERT OR IGNORE INTO PL.plantelist (moisture_set, rotate_set) "
                   "VALUES(:moisture_set, :rotate);");
 
     query.bindValue(":moisture_set", pV.moisture_set);
@@ -54,7 +54,7 @@ bool Planteliste::remove(const int &id)
 {
     mutex_.lock();
     QSqlQuery query;
-    query.prepare("DELETE FROM plantelist WHERE id=:id;");
+    query.prepare("DELETE FROM PL.plantelist WHERE id=:id;");
     query.bindValue(":id", id);
 
     if(query.exec()){
@@ -109,7 +109,7 @@ PlantValues Planteliste::get(const int &id)
     QSqlQuery query;
     PlantValues temp;
 
-    query.prepare("SELECT * FROM plantelist WHERE id = :id;");
+    query.prepare("SELECT * FROM PL.plantelist WHERE id = :id;");
     query.bindValue(":id", id);
 
     if(query.exec())
@@ -149,7 +149,7 @@ vector<PlantValues> Planteliste::getAll()
     vector<PlantValues> temp;
     QSqlQuery query;
 
-    query.prepare("SELECT id FROM plantelist;");
+    query.prepare("SELECT id FROM PL.plantelist;");
 
     if(query.exec())
         qDebug() << "dbGet OK\n";
@@ -165,7 +165,7 @@ vector<PlantValues> Planteliste::getAll()
 
 void Planteliste::openDB()
 {
-    QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE", "Planteliste");
+    db = QSqlDatabase::addDatabase("QSQLITE", "PL");
     db.setDatabaseName("./plantelist.sqlite");
 
     if (!db.open())
@@ -180,7 +180,7 @@ void Planteliste::openDB()
 void Planteliste::setupDB()
 {
     QSqlQuery query;
-    query.prepare("CREATE TABLE IF NOT EXISTS plantelist("
+    query.prepare("CREATE TABLE IF NOT EXISTS PL.plantelist("
                         "id INTEGER PRIMARY KEY AUTOINCREMENT, "
                         "moisture INT,"
                         "moisture_set INT,"
@@ -201,7 +201,6 @@ void Planteliste::setupDB()
 
 void Planteliste::closeDB()
 {
-    QSqlDatabase db;
     db.close();
 }
 
@@ -210,7 +209,7 @@ bool Planteliste::execUpdate(QString variable, int val, int id)
     QSqlQuery query;
     QString query_string;
 
-    query_string = "UPDATE OR IGNORE plantelist SET " + variable + " = " + QString::number(val) + " WHERE id = " + QString::number(id);
+    query_string = "UPDATE OR IGNORE PL.plantelist SET " + variable + " = " + QString::number(val) + " WHERE id = " + QString::number(id);
     qDebug() << query_string;
     if(query.exec(query_string)){
         qDebug() << "dbUpdate " << variable << " OK\n";

@@ -38,6 +38,7 @@ private:
     void closeDB();
     bool execUpdate(QString, int, int);
     QMutex mutex_;
+    QSqlDatabase db;
 };
 
 #endif // PLANTELISTE_H
