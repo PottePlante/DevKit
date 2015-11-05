@@ -131,12 +131,12 @@ void WiFi::handler(char* cMsg)
 void WiFi::update(PlantValues PV)
 {
     qDebug() << "WiFi update start";
-    QString Sdata = "M";
+    QByteArray Sdata = "M";
 
-    Sdata.append(QString::number(PV.id));
+    Sdata.append(QByteArray::number(PV.id));
 
     if(PV.moisture_set > 99)
-        Sdata.append(QString::number(PV.moisture_set));
+        Sdata.append(QByteArray::number(PV.moisture_set));
 
     else if(PV.moisture_set < 0)
         Sdata.append("err");
@@ -144,15 +144,15 @@ void WiFi::update(PlantValues PV)
     else
     {
         Sdata.append('0');
-        Sdata.append(QString::number(PV.moisture_set));
+        Sdata.append(QByteArray::number(PV.moisture_set));
     }
 
     Sdata.append("R");
-    Sdata.append(QString::number(PV.id));
+    Sdata.append(QByteArray::number(PV.id));
 
     qDebug() << "rotate_set modtaget der skal sendes: " << PV.rotate_set;
     if(PV.rotate_set > 99)
-        Sdata.append(QString::number(PV.rotate_set));
+        Sdata.append(QByteArray::number(PV.rotate_set));
 
     else if(PV.rotate_set < 0)
         Sdata.append("err");
@@ -160,14 +160,13 @@ void WiFi::update(PlantValues PV)
     else
     {
         Sdata.append('0');
-        Sdata.append(QString::number(PV.rotate_set));
+        Sdata.append(QByteArray::number(PV.rotate_set));
     }
 
     qDebug() << "Sender til PSoC :)" << Sdata;
 
-    QByteArray ba = Sdata.toLatin1();
-    char* dataToSend = ba.data();
 
+    char* dataToSend = Sdata.data();
     //Sender
     write(client_sock_, dataToSend, strlen(dataToSend));
 
