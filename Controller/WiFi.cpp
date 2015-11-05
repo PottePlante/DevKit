@@ -14,7 +14,7 @@ void WiFi::init(Controlpanel * CP)
 
 void WiFi::run()
 {
-    int socket_desc, c ,read_size;
+    int c ,read_size;
     struct sockaddr_in server, client;
     char client_message[30];
 
@@ -132,55 +132,43 @@ void WiFi::handler(char* cMsg)
 void WiFi::update(PlantValues PV)
 {
     qDebug() << "WiFi update start";
-    char data_send[10];
-    char data[3];
-    char id[2];
+    QByteArray Sdata = "M";
 
-    sprintf(id, "%d", PV.id);
+    Sdata.append(QByteArray::number(PV.id));
 
-    data_send[0] = 'M';
-    data_send[1] = id[0];
-
-    data_send[5] = 'R';
-    data_send[6] = id[0];
-
-
-    sprintf(data, "%d", PV.moisture_set);
-    qDebug() << "Moisture_set: " <<PV.moisture_set << "=" << data[0] << data[1] << data[2];
     if(PV.moisture_set > 99)
-    {
-        data_send[2] = data[0];
-        data_send[3] = data[1];
-        data_send[4] = data[2];
-    }
+        Sdata.append(QByteArray::number(PV.moisture_set));
+
+    else if(PV.moisture_set < 0)
+        Sdata.append("err");
+
     else
     {
-        data_send[2] = '0';
-        data_send[3] = data[0];
-        data_send[4] = data[1];
+        Sdata.append('0');
+        Sdata.append(QByteArray::number(PV.moisture_set));
     }
 
+    Sdata.append("R");
+    Sdata.append(QByteArray::number(PV.id));
 
-    sprintf(data, "%d", PV.rotate_set);
+    qDebug() << "rotate_set modtaget der skal sendes: " << PV.rotate_set;
     if(PV.rotate_set > 99)
-    {
-        data_send[7] = data[0];
-        data_send[8] = data[1];
-        data_send[9] = data[2];
-    }
+        Sdata.append(QByteArray::number(PV.rotate_set));
+
+    else if(PV.rotate_set < 0)
+        Sdata.append("err");
+
     else
     {
-        data_send[7] = '0';
-        data_send[8] = data[0];
-        data_send[9] = data[1];
+        Sdata.append('0');
+        Sdata.append(QByteArray::number(PV.rotate_set));
     }
 
-    qDebug() << "Sender til PSoC :)";
+    qDebug() << "Sender til PSoC :)" << Sdata;
 
-    for(int i=0; i<30; i++)
-        qDebug() << data_send[i];
 
-    write(client_sock_, data_send, 10);
+    char* dataToSend = Sdata.data();
+    //Sender
+    write(client_sock_, dataToSend, strlen(dataToSend));
 
 }
-

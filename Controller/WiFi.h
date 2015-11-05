@@ -31,7 +31,7 @@ private slots:
 private:
     Controlpanel* ctlPanel_;
     int port_;
-    int client_sock_;
+    int client_sock_, socket_desc;
     void handler(char* cMsg);
 };
 
