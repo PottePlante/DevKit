@@ -67,7 +67,7 @@ vector<PlanteInfo> PlanteDatabase::getAll()
 
 void PlanteDatabase::openDB()
 {
-    QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
+    QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE", "PlanteDatabase");
     db.setDatabaseName("./planteDatabase.sqlite");
 
     if (!db.open())

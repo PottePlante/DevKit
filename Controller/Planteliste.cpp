@@ -165,7 +165,7 @@ vector<PlantValues> Planteliste::getAll()
 
 void Planteliste::openDB()
 {
-    QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
+    QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE", "Planteliste");
     db.setDatabaseName("./plantelist.sqlite");
 
     if (!db.open())
