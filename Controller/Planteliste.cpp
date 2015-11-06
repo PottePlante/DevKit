@@ -210,9 +210,10 @@ void Planteliste::setupPD()
     QSqlQuery query;
 
     query.prepare("CREATE TABLE IF NOT EXISTS planteDatabase("
-                        "id INTEGER PRIMARY KEY AUTOINCREMENT, "
+                        "id INT, "
                         "moisture INT,"
                         "rotate INT,"
+                        "tmp INT,"
                         "name TEXT,"
                         "image TEXT"
                   ");");
@@ -221,6 +222,14 @@ void Planteliste::setupPD()
         qDebug() << "setupDB error! - PD" << query.lastError();
     else
         qDebug() << "setupDB done! - PD";
+
+    query.prepare("INSERT OR IGNORE INTO plantelist (id, moisture, rotate, tmp, name, image) "
+                  "VALUES(1, 50, 0, 24, 'Default', 'plantimage/default.PNG');");
+
+    if (!query.exec())
+        qDebug() << "INSERT error! - PD" << query.lastError();
+    else
+        qDebug() << "INSERT done! - PD";
 }
 
 void Planteliste::closeDB()
