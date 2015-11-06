@@ -32,14 +32,16 @@ public:
     bool update(PlantValues &pV);                       // opdatere en bestemt plante, hvis fejl returner falsk ellers returner sand.
     PlantValues get(const int &id);               // returner en plante udfra et id.
     std::vector<PlantValues> getAll();            // returner alle planter der er i databasen i en vector.
+    QMutex* getMutex();
 
 private:
     void openDB();
-    void setupDB();
+    void setupPL();
+    void setupPD();
     void closeDB();
     bool execUpdate(QString, int, int);
-    QMutex mutex_;
     QSqlDatabase db;
+    QMutex mutex_;
 };
 
 #endif // PLANTELISTE_H

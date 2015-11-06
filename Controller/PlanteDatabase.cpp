@@ -2,23 +2,25 @@
 
 using namespace std;
 
-PlanteDatabase::PlanteDatabase()
+PlanteDatabase::PlanteDatabase(QMutex* MX)
 {
-    openDB();
+    //openDB();
+    mutex_=MX;
 }
 
 PlanteDatabase::~PlanteDatabase()
 {
-    closeDB();
+    //closeDB();
 }
 
 PlanteInfo PlanteDatabase::get(const int &id)
 {
-    mutex_.lock();
+
+    mutex_->lock();
     QSqlQuery query;
     PlanteInfo temp;
 
-    query.prepare("SELECT * FROM PD.planteDatabase WHERE id = :id;");
+    query.prepare("SELECT * FROM planteDatabase WHERE id = :id;");
     query.bindValue(":id", id);
 
     if(query.exec())
@@ -41,17 +43,17 @@ PlanteInfo PlanteDatabase::get(const int &id)
         temp.id = -1;
     }
 
-    mutex_.unlock();
+    mutex_->unlock();
     return temp;
 }
 
 vector<PlanteInfo> PlanteDatabase::getAll()
 {
-    mutex_.lock();
+    mutex_->lock();
     vector<PlanteInfo> temp;
     QSqlQuery query;
 
-    query.prepare("SELECT id FROM PD.plantelist;");
+    query.prepare("SELECT id FROM plantelist;");
 
     if(query.exec())
         qDebug() << "dbGet OK\n";
@@ -61,28 +63,28 @@ vector<PlanteInfo> PlanteDatabase::getAll()
     while(query.next())
         temp.push_back(get(query.value(0).toInt()));
 
-    mutex_.unlock();
+    mutex_->unlock();
     return temp;
 }
 
-void PlanteDatabase::openDB()
+/*void PlanteDatabase::openDB()
 {
     db = QSqlDatabase::addDatabase("QSQLITE", "PD");
     db.setDatabaseName("./planteDatabase.sqlite");
 
     if (!db.open())
-        qDebug() << "Database: Connection failed.\n";
+        qDebug() << "Database: Connection failed. - PD";
     else
-        qDebug() << "Database: Connection success!\n";
+        qDebug() << "Database: Connection success! - PD";
 
     setupDB();
-}
+}*/
 
-void PlanteDatabase::setupDB()
+/*void PlanteDatabase::setupDB()
 {
     QSqlQuery query;
 
-    query.prepare("CREATE TABLE IF NOT EXISTS PD.planteDatabase("
+    query.prepare("CREATE TABLE IF NOT EXISTS planteDatabase("
                         "id INTEGER PRIMARY KEY AUTOINCREMENT, "
                         "moisture INT,"
                         "rotate INT,"
@@ -91,13 +93,13 @@ void PlanteDatabase::setupDB()
                   ");");
 
     if (!query.exec())
-        qDebug() << "setupDB error!\n";
+        qDebug() << "setupDB error! - PD";
     else
-        qDebug() << "setupDB done!\n";
-}
+        qDebug() << "setupDB done! - PD";
+}*/
 
 
-void PlanteDatabase::closeDB()
+/*void PlanteDatabase::closeDB()
 {
     db.close();
-}
+}*/

@@ -26,17 +26,16 @@ struct PlanteInfo
 class PlanteDatabase
 {
 public:
-    PlanteDatabase();
+    PlanteDatabase(QMutex*);
     ~PlanteDatabase();
 
     PlanteInfo get(const int &id);            // returner planteInformation udfra et id. hvis fejl returner "planteinfo = {id = -1};"
     std::vector<PlanteInfo> getAll();   // returner alle planteInformationer i en vector.
 private:
-    void openDB();
-    void setupDB();
-    void closeDB();
-    QSqlDatabase db;
-    QMutex mutex_;
+    //void openDB();
+    //void setupDB();
+    //void closeDB();
+    QMutex* mutex_;
 };
 
 #endif // PLANTEDATABASE_H

@@ -32,7 +32,7 @@ bool Planteliste::add(PlantValues &pV)
 {
     mutex_.lock();
     QSqlQuery query;
-    query.prepare("INSERT OR IGNORE INTO PL.plantelist (moisture_set, rotate_set) "
+    query.prepare("INSERT OR IGNORE INTO plantelist (moisture_set, rotate_set) "
                   "VALUES(:moisture_set, :rotate);");
 
     query.bindValue(":moisture_set", pV.moisture_set);
@@ -54,7 +54,7 @@ bool Planteliste::remove(const int &id)
 {
     mutex_.lock();
     QSqlQuery query;
-    query.prepare("DELETE FROM PL.plantelist WHERE id=:id;");
+    query.prepare("DELETE FROM plantelist WHERE id=:id;");
     query.bindValue(":id", id);
 
     if(query.exec()){
@@ -109,7 +109,7 @@ PlantValues Planteliste::get(const int &id)
     QSqlQuery query;
     PlantValues temp;
 
-    query.prepare("SELECT * FROM PL.plantelist WHERE id = :id;");
+    query.prepare("SELECT * FROM plantelist WHERE id = :id;");
     query.bindValue(":id", id);
 
     if(query.exec())
@@ -149,7 +149,7 @@ vector<PlantValues> Planteliste::getAll()
     vector<PlantValues> temp;
     QSqlQuery query;
 
-    query.prepare("SELECT id FROM PL.plantelist;");
+    query.prepare("SELECT id FROM plantelist;");
 
     if(query.exec())
         qDebug() << "dbGet OK\n";
@@ -163,24 +163,30 @@ vector<PlantValues> Planteliste::getAll()
     return temp;
 }
 
-void Planteliste::openDB()
+QMutex* Planteliste::getMutex()
 {
-    db = QSqlDatabase::addDatabase("QSQLITE", "PL");
-    db.setDatabaseName("./plantelist.sqlite");
-
-    if (!db.open())
-        qDebug() << "Database: Connection failed.\n";
-    else
-        qDebug() << "Database: Connection success!\n";
-
-
-    setupDB();
+    return &mutex_;
 }
 
-void Planteliste::setupDB()
+void Planteliste::openDB()
+{
+    db = QSqlDatabase::addDatabase("QSQLITE");
+    db.setDatabaseName("./Controller.sqlite");
+
+    if (!db.open())
+        qDebug() << "Database: Connection failed.";
+    else
+        qDebug() << "Database: Connection success!";
+
+
+    setupPL();
+    setupPD();
+}
+
+void Planteliste::setupPL()
 {
     QSqlQuery query;
-    query.prepare("CREATE TABLE IF NOT EXISTS PL.plantelist("
+    query.prepare("CREATE TABLE IF NOT EXISTS plantelist("
                         "id INTEGER PRIMARY KEY AUTOINCREMENT, "
                         "moisture INT,"
                         "moisture_set INT,"
@@ -194,9 +200,27 @@ void Planteliste::setupDB()
                   ");");
 
     if (!query.exec())
-        qDebug() << "setupDB error!\n";
+        qDebug() << "setupDB error! - PL" << query.lastError();
     else
-        qDebug() << "setupDB done!\n";
+        qDebug() << "setupDB done! - PL";
+}
+
+void Planteliste::setupPD()
+{
+    QSqlQuery query;
+
+    query.prepare("CREATE TABLE IF NOT EXISTS planteDatabase("
+                        "id INTEGER PRIMARY KEY AUTOINCREMENT, "
+                        "moisture INT,"
+                        "rotate INT,"
+                        "name TEXT,"
+                        "image TEXT"
+                  ");");
+
+    if (!query.exec())
+        qDebug() << "setupDB error! - PD" << query.lastError();
+    else
+        qDebug() << "setupDB done! - PD";
 }
 
 void Planteliste::closeDB()
