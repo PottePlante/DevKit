@@ -24,7 +24,7 @@ public:
     void removePlant(int id);
     void changePlant(PlantValues);
     const std::vector<PlanteInfo> getPlantInfo() const;
-
+    const std::vector<PlantValues> getPlantValue() const;
     PlantValues getPlantValue(int id);
     PlanteInfo getPlantInfo(int id);
     void updatePlantValue(PlantValues);

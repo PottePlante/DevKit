@@ -48,6 +48,9 @@ private slots:
     void on_plant_combobox_currentIndexChanged(int index);
 
 private:
+    void updateCombobox();
+    void updateStatusPage();
+    void updateParameter();
     std::vector<pos_combo> plant_pos;
     std::vector<pos_combo> type_pos;
     std::vector<PlantItems_ui*> list_;

@@ -48,6 +48,7 @@ void Touchscreen::update(PlanteInfo pI, PlantValues pV)
         qDebug() << "touchscreen : update plant added id:"<<pV.id;
         list_.push_back(new PlantItems_ui(pI, pV));
 
+
     }
     else
     {
@@ -90,8 +91,15 @@ void Touchscreen::update(PlanteInfo pI, PlantValues pV)
         }
 
     }
+    qDebug() << "touchscreen : update plant to combox id:"<<pV.id;
+
+
+
     qDebug() << "touchscreen : gui update";
 }
+
+
+
 
 void Touchscreen::init(Controlpanel *ctlPanel, vector<PlanteInfo> pI_vec, vector<PlantValues> pV_vec)
 {
@@ -222,5 +230,75 @@ void Touchscreen::on_plant_combobox_currentIndexChanged(int index)
         }
     }
 
+
+}
+
+void Touchscreen::updateCombobox()
+{
+    ui->plant_combobox->clear();
+    ui->type_combobox->clear();
+
+    for(uint i = 0; i < plant_pos.size(); i++)
+    {
+        PlantValues tmp_val = ctlPanel_->getPlantValue(plant_pos[i].id);
+        QString tmp = QString("id : ") + QString.number(tmp_val.id);
+        ui->plant_combobox->addItem(tmp);
+        plant_pos[i].pos = i;
+    }
+
+    for(uint i = 0; i < type_pos.size(); i++)
+    {
+        PlanteInfo tmp_info = ctlPanel_->getPlantInfo(type_pos[i].id);
+        ui->type_combobox->addItem(tmp_info.name);
+    }
+
+}
+
+void Touchscreen::updateStatusPage()
+{
+    int col = 0;
+    int row = 0;
+    for(uint i = 0; i < 6; i++)
+    {
+        if(i < list_.size())
+        {
+            ui->gridLayout->addWidget((QWidget*)list_[i]->get(), row, col);
+        }
+        else
+        {
+            ui->gridLayout->addItem(space_ , row, col);
+        }
+
+
+
+        if(col == 3)
+        {
+            col = 0;
+            row++;
+        }
+        else
+        {
+            col++;
+        }
+
+    }
+}
+
+void Touchscreen::updateParameter()
+{
+    PlantValues tmp_val = ctlPanel_->getPlantValue(plant_pos[ui->plant_combobox->currentIndex()].id);
+    PlanteInfo tmp_info = ctlPanel_->getPlantInfo(tmp_val.plantInfo_id);
+
+    for(uint i = 0; i < type_pos.size(); i++)
+    {
+        if(tmp_info.id == type_pos[i].id)
+        {
+            ui->type_combobox->setCurrentIndex(i);
+        }
+    }
+
+    ui->moisture_slider->setValue(tmp_info.moisture);
+    ui->rotate_slider->setValue(tmp_info.rotate);
+    //ui->temperature_slider->setValue(tmp_info.tmp); // skal løses!!!
 
 }
