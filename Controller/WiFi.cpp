@@ -155,6 +155,8 @@ void WiFi::update(PlantValues PV)
         Sdata.append(QByteArray::number(PV.moisture_set));
     }
 
+    //-------Rotate_set
+
     Sdata.append("R");
     Sdata.append(QByteArray::number(PV.id));
 
