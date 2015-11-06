@@ -110,7 +110,6 @@ void Touchscreen::init(Controlpanel *ctlPanel, vector<PlanteInfo> pI_vec, vector
     ui->type_combobox->clear();
     plant_pos.clear();
     type_pos.clear();
-    int size = pV_vec.size();
     qDebug() << "touchscreen : init - update combobox plant";
     for(uint i = 0; i < pV_vec.size(); i++)
     {
@@ -122,8 +121,8 @@ void Touchscreen::init(Controlpanel *ctlPanel, vector<PlanteInfo> pI_vec, vector
         plant_pos.push_back(pos_tmp);
         QString tmp = QString("id: ") + QString::number(pV_vec[i].id);
         ui->plant_combobox->addItem(tmp);
-        uint i2 = 0;
-        for(i2; i2 < pI_vec.size(); i2++)
+
+        for(uint i2 = 0; i2 < pI_vec.size(); i2++)
         {
 
             if(pV_vec[i].plantInfo_id==pI_vec[i2].id)
@@ -241,7 +240,7 @@ void Touchscreen::updateCombobox()
     for(uint i = 0; i < plant_pos.size(); i++)
     {
         PlantValues tmp_val = ctlPanel_->getPlantValue(plant_pos[i].id);
-        QString tmp = QString("id : ") + QString.number(tmp_val.id);
+        QString tmp = QString("id : ") + QString::number(tmp_val.id);
         ui->plant_combobox->addItem(tmp);
         plant_pos[i].pos = i;
     }
@@ -299,6 +298,22 @@ void Touchscreen::updateParameter()
 
     ui->moisture_slider->setValue(tmp_info.moisture);
     ui->rotate_slider->setValue(tmp_info.rotate);
+
     //ui->temperature_slider->setValue(tmp_info.tmp); // skal løses!!!
 
+}
+
+void Touchscreen::on_moisture_slider_sliderMoved(int position)
+{
+    ui->moisture_label->setText(QString("Moisture ") + QString::number(position) + "%");
+}
+
+void Touchscreen::on_temperature_slider_sliderMoved(int position)
+{
+    ui->temperature_label->setText(QString("Max temperature ") + QString::number(position)+ "C");
+}
+
+void Touchscreen::on_rotate_slider_sliderMoved(int position)
+{
+    ui->rotate_label->setText(QString("Rotate ") + QString::number(position) + " deg/hour");
 }

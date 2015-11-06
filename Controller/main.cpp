@@ -9,8 +9,9 @@
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    PlanteDatabase pd;
+
     Planteliste pl;
+    PlanteDatabase pd(pl.getMutex());
     //WiFi wf;
     Touchscreen ui;
     WiFi wf;
