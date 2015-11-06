@@ -52,9 +52,10 @@ vector<PlanteInfo> PlanteDatabase::getAll()
 {
     mutex_->lock();
     vector<PlanteInfo> temp;
+    vector<int> id;
     QSqlQuery query;
 
-    query.prepare("SELECT id FROM plantelist;");
+    query.prepare("SELECT id FROM planteDatabase;");
 
     if(query.exec())
         qDebug() << "dbGet OK\n";
@@ -62,7 +63,12 @@ vector<PlanteInfo> PlanteDatabase::getAll()
         qDebug() << "dbGet err! \n";
 
     while(query.next())
-        temp.push_back(get(query.value(0).toInt()));
+        id.push_back(query.value(0).toInt());
+
+    while(!id.empty()){
+        temp.push_back(get(id.back()));
+        id.pop_back();
+    }
 
     mutex_->unlock();
     return temp;
