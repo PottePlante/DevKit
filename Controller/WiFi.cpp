@@ -139,6 +139,13 @@ void WiFi::update(PlantValues PV)
     if(PV.moisture_set > 99)
         Sdata.append(QByteArray::number(PV.moisture_set));
 
+    if(PV.moisture_set <10 && PV.moisture_set >=0)
+    {
+        Sdata.append('0');
+        Sdata.append('0');
+        Sdata.append(QByteArray::number(PV.rotate_set));
+    }
+
     else if(PV.moisture_set < 0)
         Sdata.append("err");
 
@@ -154,6 +161,13 @@ void WiFi::update(PlantValues PV)
     qDebug() << "rotate_set modtaget der skal sendes: " << PV.rotate_set;
     if(PV.rotate_set > 99)
         Sdata.append(QByteArray::number(PV.rotate_set));
+
+    if(PV.rotate_set <10 && PV.rotate_set >=0)
+    {
+        Sdata.append('0');
+        Sdata.append('0');
+        Sdata.append(QByteArray::number(PV.rotate_set));
+    }
 
     else if(PV.rotate_set < 0)
         Sdata.append("err");
