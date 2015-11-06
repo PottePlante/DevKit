@@ -241,7 +241,7 @@ void Touchscreen::updateCombobox()
     for(uint i = 0; i < plant_pos.size(); i++)
     {
         PlantValues tmp_val = ctlPanel_->getPlantValue(plant_pos[i].id);
-        QString tmp = QString("id : ") + QString.number(tmp_val.id);
+        QString tmp = QString("id : ") + QString::number(tmp_val.id);
         ui->plant_combobox->addItem(tmp);
         plant_pos[i].pos = i;
     }
@@ -299,6 +299,22 @@ void Touchscreen::updateParameter()
 
     ui->moisture_slider->setValue(tmp_info.moisture);
     ui->rotate_slider->setValue(tmp_info.rotate);
+
     //ui->temperature_slider->setValue(tmp_info.tmp); // skal løses!!!
 
+}
+
+void Touchscreen::on_moisture_slider_sliderMoved(int position)
+{
+    ui->moisture_label->setText(QString("Moisture ") + QString::number(position) + "%");
+}
+
+void Touchscreen::on_temperature_slider_sliderMoved(int position)
+{
+    ui->temperature_label->setText(QString("Max temperature ") + QString::number(position)+ "C");
+}
+
+void Touchscreen::on_rotate_slider_sliderMoved(int position)
+{
+    ui->rotate_label->setText(QString("Rotate ") + QString::number(position) + " deg/hour");
 }
