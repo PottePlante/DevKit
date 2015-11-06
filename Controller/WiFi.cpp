@@ -1,7 +1,6 @@
 #include "WiFi.h"
 #include "Controlpanel.h"
 
-//Test
 using namespace std;
 
 WiFi::WiFi(int port):
