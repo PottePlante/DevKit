@@ -139,7 +139,7 @@ void WiFi::update(PlantValues PV)
     if(PV.moisture_set > 99)
         Sdata.append(QByteArray::number(PV.moisture_set));
 
-    if(PV.moisture_set <10 && PV.moisture_set >=0)
+    else if(PV.moisture_set <10 && PV.moisture_set >=0)
     {
         Sdata.append('0');
         Sdata.append('0');
@@ -164,7 +164,7 @@ void WiFi::update(PlantValues PV)
     if(PV.rotate_set > 99)
         Sdata.append(QByteArray::number(PV.rotate_set));
 
-    if(PV.rotate_set <10 && PV.rotate_set >=0)
+    else if(PV.rotate_set <10 && PV.rotate_set >=0)
     {
         Sdata.append('0');
         Sdata.append('0');
