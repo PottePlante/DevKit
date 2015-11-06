@@ -53,6 +53,8 @@ private slots:
 
     void on_rotate_slider_sliderMoved(int position);
 
+    void on_moisture_slider_actionTriggered(int action);
+
 private:
     void updateCombobox();
     void updateStatusPage();

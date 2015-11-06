@@ -111,7 +111,7 @@ void Touchscreen::init(Controlpanel *ctlPanel, vector<PlanteInfo> pI_vec, vector
     plant_pos.clear();
     type_pos.clear();
     qDebug() << "touchscreen : init - update combobox plant";
-    for(uint i = 0; i < pV_vec.size(); i++)
+    for(int i = 0; i < pV_vec.size(); i++)
     {
 
         pos_combo pos_tmp;
@@ -135,19 +135,24 @@ void Touchscreen::init(Controlpanel *ctlPanel, vector<PlanteInfo> pI_vec, vector
     }
 
     qDebug() << "touchscreen : init - update combobox plantInfo";
-    for(uint i = 0; i < pI_vec.size(); i++)
+    pos_combo pos_tmp ={
+        //.id = pI_vec[i].id,
+        .id = 1,
+        .pos = 1
+    };
+
+    for(int i = 0; i < pI_vec.size(); i++)
     {
-        pos_combo pos_tmp;
-        pos_tmp.id = pV_vec[i].id;
-        pos_tmp.pos = i;
-
-        plant_pos.push_back(pos_tmp);
-        ui->type_combobox->addItem(pI_vec[i].name);
-
-
-
+        qDebug() << "touchscreen : added to combobox planttype id " << pI_vec[i].id;
+        pos_combo pos_tmp ={
+          .id = pI_vec[i].id,
+          .pos = i
+         };
+        type_pos.push_back(pos_tmp);
     }
+    updateCombobox();
 
+    qDebug() << "touchscreen : init - update done";
 
 }
 
@@ -305,7 +310,7 @@ void Touchscreen::updateParameter()
 
 void Touchscreen::on_moisture_slider_sliderMoved(int position)
 {
-    ui->moisture_label->setText(QString("Moisture ") + QString::number(position) + "%");
+
 }
 
 void Touchscreen::on_temperature_slider_sliderMoved(int position)
@@ -316,4 +321,9 @@ void Touchscreen::on_temperature_slider_sliderMoved(int position)
 void Touchscreen::on_rotate_slider_sliderMoved(int position)
 {
     ui->rotate_label->setText(QString("Rotate ") + QString::number(position) + " deg/hour");
+}
+
+void Touchscreen::on_moisture_slider_actionTriggered(int action)
+{
+    ui->moisture_label->setText(QString("Moisture ") + QString::number(ui->moisture_slider->value()) + "%");
 }

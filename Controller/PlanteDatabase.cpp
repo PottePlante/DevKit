@@ -65,12 +65,11 @@ vector<PlanteInfo> PlanteDatabase::getAll()
     while(query.next())
         id.push_back(query.value(0).toInt());
 
+    mutex_->unlock();
     while(!id.empty()){
         temp.push_back(get(id.back()));
         id.pop_back();
     }
-
-    mutex_->unlock();
     return temp;
 }
 

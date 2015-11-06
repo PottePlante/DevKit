@@ -117,6 +117,10 @@ void Controlpanel::updatePlantValue(PlantValues pV)
     {
         list_->add(newpV);
         newpV.plantInfo_id = 1;
+        PlanteInfo pI_tmp = database_->get(1);
+        newpV.moisture_set = pI_tmp.moisture;
+        newpV.rotate_set = pI_tmp.rotate;
+        newpV.tmp_set = pI_tmp.tmp;
         list_->update(newpV);
         qDebug() << "Contolpanel : new plant added id:"<<newpV.id;
     }
@@ -127,6 +131,7 @@ void Controlpanel::updatePlantValue(PlantValues pV)
 
         newpV.moisture_set = tmp.moisture_set;
         newpV.tmp_set = tmp.tmp_set;
+        newpV.rotate_set = tmp.rotate_set;
         if(!list_->update(newpV))
         {
             qDebug() << "Contolpanel : error plant not updated. plant id:"<<newpV.id;

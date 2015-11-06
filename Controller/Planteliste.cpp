@@ -147,6 +147,7 @@ vector<PlantValues> Planteliste::getAll()
 {
    mutex_.lock();
     vector<PlantValues> temp;
+    vector<int> id;
     QSqlQuery query;
 
     query.prepare("SELECT id FROM plantelist;");
@@ -157,9 +158,14 @@ vector<PlantValues> Planteliste::getAll()
         qDebug() << "dbGet err! \n";
 
     while(query.next())
-        temp.push_back(get(query.value(0).toInt()));
+        id.push_back(query.value(0).toInt());
 
     mutex_.unlock();
+    while(!id.empty()){
+        temp.push_back(get(id.back()));
+        id.pop_back();
+    }
+
     return temp;
 }
 
@@ -188,15 +194,15 @@ void Planteliste::setupPL()
     QSqlQuery query;
     query.prepare("CREATE TABLE IF NOT EXISTS plantelist("
                         "id INTEGER PRIMARY KEY AUTOINCREMENT, "
-                        "moisture INT,"
-                        "moisture_set INT,"
-                        "water INT,"
-                        "tmp INT,"
-                        "tmp_set INT,"
-                        "light INT,"
-                        "battery INT,"
-                        "rotate_set INT,"
-                        "plantInfo_id INT"
+                        "moisture INT DEFAULT 0,"
+                        "moisture_set INT  DEFAULT 0,"
+                        "water INT  DEFAULT 0,"
+                        "tmp INT DEFAULT 0,"
+                        "tmp_set INT DEFAULT 0,"
+                        "light INT DEFAULT 0,"
+                        "battery INT DEFAULT 0,"
+                        "rotate_set INT DEFAULT 0,"
+                        "plantInfo_id INT DEFAULT 0"
                   ");");
 
     if (!query.exec())
@@ -223,13 +229,22 @@ void Planteliste::setupPD()
     else
         qDebug() << "setupDB done! - PD";
 
-    query.prepare("INSERT OR IGNORE INTO plantelist (id, moisture, rotate, tmp, name, image) "
+    query.prepare("SELECT count(*) FROM planteDatabase;");
+    if (!query.exec())
+        qDebug() << "setupDB error! - PD" << query.lastError();
+    else
+        qDebug() << "setupDB done! - PD";
+    int test;
+    test = query.value(0).toInt();
+
+    if(test == 0){
+    query.prepare("INSERT OR IGNORE INTO planteDatabase (id, moisture, rotate, tmp, name, image) "
                   "VALUES(1, 50, 0, 24, 'Default', 'plantimage/default.PNG');");
 
     if (!query.exec())
         qDebug() << "INSERT error! - PD" << query.lastError();
     else
-        qDebug() << "INSERT done! - PD";
+        qDebug() << "INSERT done! - PD";}
 }
 
 void Planteliste::closeDB()
@@ -242,7 +257,7 @@ bool Planteliste::execUpdate(QString variable, int val, int id)
     QSqlQuery query;
     QString query_string;
 
-    query_string = "UPDATE OR IGNORE PL.plantelist SET " + variable + " = " + QString::number(val) + " WHERE id = " + QString::number(id);
+    query_string = "UPDATE OR IGNORE plantelist SET " + variable + " = " + QString::number(val) + " WHERE id = " + QString::number(id);
     qDebug() << query_string;
     if(query.exec(query_string)){
         qDebug() << "dbUpdate " << variable << " OK\n";
