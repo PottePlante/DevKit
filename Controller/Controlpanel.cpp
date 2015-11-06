@@ -19,6 +19,7 @@ Controlpanel::Controlpanel(PlanteDatabase *database, Planteliste *list, Touchscr
             .id = 0,//-1 for intet valgt id
             .moisture = 50,
             .rotate = 10,
+            .tmp = 50,
             .name = "blomst",
             .image = "plantimage/test.PNG"
         };

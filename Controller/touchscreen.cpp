@@ -103,7 +103,7 @@ void Touchscreen::update(PlanteInfo pI, PlantValues pV)
 
 void Touchscreen::init(Controlpanel *ctlPanel, vector<PlanteInfo> pI_vec, vector<PlantValues> pV_vec)
 {
-    qDebug() << "touchscreen : init";
+    qDebug() << "touchscreen : init pI size " << pI_vec.size() << " pV size " << pV_vec.size();
     ctlPanel_ = ctlPanel;
 
     ui->plant_combobox->clear();
