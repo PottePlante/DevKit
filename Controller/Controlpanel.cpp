@@ -110,9 +110,13 @@ void Controlpanel::updatePlantValue(PlantValues pV)
 {
     qDebug() << "Contolpanel : update plant id:"<<pV.id;
     PlantValues newpV = pV;
-    if(pV.id == -1)
+
+
+    if(list_->get(pV.id).id == -1)
     {
         list_->add(newpV);
+        newpV.plantInfo_id = 1;
+        list_->update(newpV);
         qDebug() << "Contolpanel : new plant added id:"<<newpV.id;
     }
     else
