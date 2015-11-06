@@ -35,8 +35,9 @@ PlanteInfo PlanteDatabase::get(const int &id)
         temp.id = query.value(0).toInt();
         temp.moisture = query.value(1).toInt();
         temp.rotate = query.value(2).toInt();
-        temp.name = query.value(3).toString();
-        temp.image = query.value(4).toString();
+        temp.tmp = query.value(3).toInt();
+        temp.name = query.value(4).toString();
+        temp.image = query.value(5).toString();
     }
     else{
         qDebug() << "get no rows in DB!\n";

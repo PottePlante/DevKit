@@ -19,6 +19,7 @@ struct PlanteInfo
     int id;//-1 for intet valgt id
     int moisture;
     int rotate;
+    int tmp;
     QString name;
     QString image;
 };
