@@ -110,7 +110,6 @@ void Touchscreen::init(Controlpanel *ctlPanel, vector<PlanteInfo> pI_vec, vector
     ui->type_combobox->clear();
     plant_pos.clear();
     type_pos.clear();
-    int size = pV_vec.size();
     qDebug() << "touchscreen : init - update combobox plant";
     for(uint i = 0; i < pV_vec.size(); i++)
     {
@@ -122,8 +121,8 @@ void Touchscreen::init(Controlpanel *ctlPanel, vector<PlanteInfo> pI_vec, vector
         plant_pos.push_back(pos_tmp);
         QString tmp = QString("id: ") + QString::number(pV_vec[i].id);
         ui->plant_combobox->addItem(tmp);
-        uint i2 = 0;
-        for(i2; i2 < pI_vec.size(); i2++)
+
+        for(uint i2 = 0; i2 < pI_vec.size(); i2++)
         {
 
             if(pV_vec[i].plantInfo_id==pI_vec[i2].id)
