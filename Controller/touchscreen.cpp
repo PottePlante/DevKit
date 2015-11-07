@@ -65,41 +65,12 @@ void Touchscreen::update(PlanteInfo pI, PlantValues pV)
         list_.push_back(new PlantItems_ui(pI, pV));
     }
 
-    int col = 0;
-    int row = 0;
-    for(uint i = 0; i < 6; i++)
-    {
-        if(i < list_.size())
-        {
-            ui->gridLayout->addWidget((QWidget*)list_[i]->get(), row, col);
-        }
-        else
-        {
-            ui->gridLayout->addItem(space_ , row, col);
-        }
-
-
-
-        if(col == 3)
-        {
-            col = 0;
-            row++;
-        }
-        else
-        {
-            col++;
-        }
-
-    }
+    updateCombobox();
     qDebug() << "touchscreen : update plant to combox id:"<<pV.id;
 
-
-
+    updateStatusPage();
     qDebug() << "touchscreen : gui update";
 }
-
-
-
 
 void Touchscreen::init(Controlpanel *ctlPanel, vector<PlanteInfo> pI_vec, vector<PlantValues> pV_vec)
 {
@@ -119,8 +90,8 @@ void Touchscreen::init(Controlpanel *ctlPanel, vector<PlanteInfo> pI_vec, vector
         pos_tmp.pos = i;
         qDebug() << "touchscreen : init - id"<<pV_vec[i].id << " pos:"<<i;
         plant_pos.push_back(pos_tmp);
-        QString tmp = QString("id: ") + QString::number(pV_vec[i].id);
-        ui->plant_combobox->addItem(tmp);
+//        QString tmp = QString("id: ") + QString::number(pV_vec[i].id);
+//        ui->plant_combobox->addItem(tmp);
 
         for(uint i2 = 0; i2 < pI_vec.size(); i2++)
         {
@@ -303,27 +274,25 @@ void Touchscreen::updateParameter()
 
     ui->moisture_slider->setValue(tmp_info.moisture);
     ui->rotate_slider->setValue(tmp_info.rotate);
+    ui->temperature_slider->setValue(tmp_info.tmp);
 
-    //ui->temperature_slider->setValue(tmp_info.tmp); // skal løses!!!
-
+    ui->moisture_label->setText(QString("Moisture ") + QString::number(ui->moisture_slider->value()) + "%");
+    ui->temperature_label->setText(QString("Max temperature ") + QString::number(ui->temperature_slider->value())+ "C");
+    ui->rotate_label->setText(QString("Rotate ") + QString::number(ui->rotate_slider->value()) + " deg/hour");
 }
 
-void Touchscreen::on_moisture_slider_sliderMoved(int position)
-{
-
-}
-
-void Touchscreen::on_temperature_slider_sliderMoved(int position)
-{
-    ui->temperature_label->setText(QString("Max temperature ") + QString::number(position)+ "C");
-}
-
-void Touchscreen::on_rotate_slider_sliderMoved(int position)
-{
-    ui->rotate_label->setText(QString("Rotate ") + QString::number(position) + " deg/hour");
-}
 
 void Touchscreen::on_moisture_slider_actionTriggered(int action)
 {
     ui->moisture_label->setText(QString("Moisture ") + QString::number(ui->moisture_slider->value()) + "%");
+}
+
+void Touchscreen::on_temperature_slider_actionTriggered(int action)
+{
+     ui->temperature_label->setText(QString("Max temperature ") + QString::number(ui->temperature_slider->value())+ "C");
+}
+
+void Touchscreen::on_rotate_slider_actionTriggered(int action)
+{
+    ui->rotate_label->setText(QString("Rotate ") + QString::number(ui->rotate_slider->value()) + " deg/hour");
 }

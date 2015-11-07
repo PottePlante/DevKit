@@ -47,13 +47,11 @@ private slots:
 
     void on_plant_combobox_currentIndexChanged(int index);
 
-    void on_moisture_slider_sliderMoved(int position);
-
-    void on_temperature_slider_sliderMoved(int position);
-
-    void on_rotate_slider_sliderMoved(int position);
-
     void on_moisture_slider_actionTriggered(int action);
+
+    void on_temperature_slider_actionTriggered(int action);
+
+    void on_rotate_slider_actionTriggered(int action);
 
 private:
     void updateCombobox();
