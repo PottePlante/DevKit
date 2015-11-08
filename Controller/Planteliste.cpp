@@ -229,22 +229,22 @@ void Planteliste::setupPD()
     else
         qDebug() << "setupDB done! - PD";
 
-    query.prepare("SELECT count(*) FROM planteDatabase;");
-    if (!query.exec())
-        qDebug() << "setupDB error! - PD" << query.lastError();
-    else
-        qDebug() << "setupDB done! - PD";
-    int test;
-    test = query.value(0).toInt();
+//    query.prepare("SELECT count(*) FROM planteDatabase;");
+//    if (!query.exec())
+//        qDebug() << "setupDB error! - PD" << query.lastError();
+//    else
+//        qDebug() << "setupDB done! - PD";
+//    int test;
+//    test = query.value(0).toInt();
+//    qDebug() << "database size : " << test;
+//    if(test == 0){
+//    query.prepare("INSERT OR IGNORE INTO planteDatabase (id, moisture, rotate, tmp, name, image) "
+//                  "VALUES(1, 50, 0, 24, 'Default', 'plantimage/default.PNG');");
 
-    if(test == 0){
-    query.prepare("INSERT OR IGNORE INTO planteDatabase (id, moisture, rotate, tmp, name, image) "
-                  "VALUES(1, 50, 0, 24, 'Default', 'plantimage/default.PNG');");
-
-    if (!query.exec())
-        qDebug() << "INSERT error! - PD" << query.lastError();
-    else
-        qDebug() << "INSERT done! - PD";}
+//    if (!query.exec())
+//        qDebug() << "INSERT error! - PD" << query.lastError();
+//    else
+//        qDebug() << "INSERT done! - PD";}
 }
 
 void Planteliste::closeDB()
