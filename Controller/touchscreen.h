@@ -39,21 +39,33 @@ public:
 
 private slots:
 
+    void removePlant(int);
+
     void update(PlanteInfo, PlantValues);
 
     void on_test_add_clicked();
 
     void on_get_status_button_clicked();
 
-    void on_plant_combobox_currentIndexChanged(int index);
+    void on_Change_button_clicked();
 
-    void on_moisture_slider_actionTriggered(int action);
+    void on_default_button_clicked();
 
-    void on_temperature_slider_actionTriggered(int action);
+    void on_pushButton_clicked();
 
-    void on_rotate_slider_actionTriggered(int action);
+    void on_type_combobox_activated(int index);
+
+    void on_plant_combobox_activated(int index);
+
+    void on_moisture_slider_valueChanged(int value);
+
+    void on_temperature_slider_valueChanged(int value);
+
+    void on_rotate_slider_valueChanged(int value);
 
 private:
+    void updateParameter_slider(PlantValues);
+    void updateParameter_slider(PlanteInfo);
     void updateCombobox();
     void updateStatusPage();
     void updateParameter();

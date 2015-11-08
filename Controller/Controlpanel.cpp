@@ -67,6 +67,7 @@ Controlpanel::Controlpanel(PlanteDatabase *database, Planteliste *list, Touchscr
     wifi_->moveToThread(workerThread);
     connect(workerThread, SIGNAL(started()), wifi_, SLOT(run()));
     connect(this, SIGNAL(guiUpdate(PlanteInfo, PlantValues)), ui_, SLOT(update(PlanteInfo, PlantValues)));
+    connect(this, SIGNAL(guiRemovePlant(int)), ui_, SLOT(removePlant(int)));
     workerThread->start();
 
     ui_->show();
@@ -78,11 +79,24 @@ void Controlpanel::removePlant(int id)
 {
     qDebug() << "Contolpanel : remove plant id:"<<id;
     list_->remove(id);
+    emit guiRemovePlant(id);
 }
 
-void Controlpanel::changePlant(PlantValues pV)
+void Controlpanel::changePlant(PlantValues pV_set)
 {
-    qDebug() << "Contolpanel - !not build! : change plant id:" << pV.id;
+    qDebug() << "Contolpanel : change plant id:" << pV_set.id;
+    PlantValues pV = list_->get(pV_set.id);
+
+    pV.plantInfo_id = pV_set.plantInfo_id;
+    pV.moisture_set = pV_set.moisture_set;
+    pV.rotate_set = pV_set.rotate_set;
+    pV.tmp_set = pV_set.tmp_set;
+
+    list_->update(pV);
+
+    emit guiUpdate(database_->get(pV.plantInfo_id), pV);
+
+    qDebug() << "Contolpanel - done : change plant id:" << pV.id;
 }
 
 const std::vector<PlanteInfo> Controlpanel::getPlantInfo() const
@@ -103,8 +117,6 @@ PlanteInfo Controlpanel::getPlantInfo(int id)
     qDebug() << "Contolpanel : getPlantInfo id:"<<id;
     return database_->get(id);
 }
-
-
 
 
 void Controlpanel::updatePlantValue(PlantValues pV)

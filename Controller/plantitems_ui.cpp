@@ -67,11 +67,23 @@ PlantItems_ui::PlantItems_ui(PlanteInfo pI, PlantValues pV)
 
 PlantItems_ui::~PlantItems_ui()
 {
-    delete layout_;
-    delete box_;
+    qDebug() << "remove plantItem_ui : image - id:"<<id_;
+    delete image_;
+    delete scene_;
+    delete view_;
+
+    qDebug() << "remove plantItem_ui : other stuf - id:"<<id_;
+
     delete text_;
     delete water_;
-    qDebug() << "remove plantItem_ui id:"<<id_;
+
+    qDebug() << "remove plantItem_ui : layout - id:"<<id_;
+    delete layout_;
+
+    qDebug() << "remove plantItem_ui : box - id:"<<id_;
+    delete box_;
+
+    qDebug() << "remove plantItem_ui : done id:"<<id_;
 }
 
 int PlantItems_ui::getId() const

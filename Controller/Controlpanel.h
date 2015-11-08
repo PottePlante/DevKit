@@ -30,7 +30,7 @@ public:
     void updatePlantValue(PlantValues);
 signals:
     void guiUpdate(PlanteInfo, PlantValues);
-
+    void guiRemovePlant(int);
 private:
 
     PlanteDatabase* database_;
