@@ -30,6 +30,10 @@ Touchscreen::Touchscreen(QWidget *parent) :
 Touchscreen::~Touchscreen()
 {
     qDebug() << "touchscreen : delete";
+    for(int i = 0; i < list_.size(); i++)
+        delete list_[i];
+
+    delete space_;
     delete ui;
 }
 
