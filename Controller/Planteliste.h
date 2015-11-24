@@ -33,6 +33,7 @@ public:
     PlantValues get(const int &id);               // returner en plante udfra et id.
     std::vector<PlantValues> getAll();            // returner alle planter der er i databasen i en vector.
     QMutex* getMutex();
+    bool xmlUpdate();
 
 private:
     void openDB();
