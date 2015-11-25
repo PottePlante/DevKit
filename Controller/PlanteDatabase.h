@@ -32,6 +32,7 @@ public:
 
     PlanteInfo get(const int &id);            // returner planteInformation udfra et id. hvis fejl returner "planteinfo = {id = -1};"
     std::vector<PlanteInfo> getAll();   // returner alle planteInformationer i en vector.
+    bool xmlUpdate();
 private:
     //void openDB();
     //void setupDB();

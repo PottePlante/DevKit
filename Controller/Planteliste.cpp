@@ -15,12 +15,7 @@
 #include "Planteliste.h"
 //#include <algorithm>
 //#include <iterator>
-#include <QNetworkAccessManager>
-#include <QNetworkRequest>
-#include <QNetworkReply>
-#include <QEventLoop>
-#include <QDomDocument>
-#include <QDomNode>
+
 
 using namespace std;
 
@@ -145,11 +140,11 @@ PlantValues Planteliste::get(const int &id)
         temp.id = -1;
     }
 
-    xzxzxmutex_.unlock();
+    mutex_.unlock();
     return temp;
 }
 
-vector<PlantzValues> Planteliste::getAll()
+vector<PlantValues> Planteliste::getAll()
 {
    mutex_.lock();
     vector<PlantValues> temp;
@@ -234,8 +229,6 @@ void Planteliste::setupPD()
         qDebug() << "setupDB error! - PD" << query.lastError();
     else
         qDebug() << "setupDB done! - PD";
-
-    xmlUpdate();
 }
 
 void Planteliste::closeDB()
@@ -261,66 +254,7 @@ bool Planteliste::execUpdate(QString variable, int val, int id)
     }
 }
 
-bool Planteliste::xmlUpdate()
-{
-    QSqlQuery query;
-    QNetworkAccessManager manager;
-    QNetworkReply *response = manager.get(QNetworkRequest(QUrl("http://plante.nytsite.dk")));
-    QEventLoop event;
-    QEventLoop::connect(response,SIGNAL(finished()),&event,SLOT(quit()));
-    event.exec();
-    QDomDocument doc;
-    doc.setContent(response->readAll());
 
-    //Tjekker http status kode
-    if(response->attribute(QNetworkRequest::HttpStatusCodeAttribute) != 200) {
-        qDebug() << "http status fejl: " << response->attribute(QNetworkRequest::HttpStatusCodeAttribute);
-        return 0;
-    }
-
-    QDomNodeList list = doc.lastChild().childNodes();
-
-    mutex_.lock();
-    //Tømmer DB
-    query.prepare("DELETE FROM planteDatabase;");
-
-    if (!query.exec()){
-        qDebug() << "Delete error! - PD" << query.lastError();
-        mutex_.ulock();
-        return false;
-    }
-    else
-        qDebug() << "Delete done! - PD";
-
-
-    //Updatere DB
-    for (int i = 0; i < list.count(); i++) {
-        query.clear();
-        QDomElement node = list.at(i).toElement();
-
-        query.prepare("INSERT OR IGNORE INTO planteDatabase (id, moisture, rotate, tmp, name, image) "
-                      "VALUES(:id, :moisture, :rotate, :tmp, :name, :image);");
-
-        query.bindValue(":id", node.attribute("id"));
-        query.bindValue(":moisture", node.attribute("moisture"));
-        query.bindValue(":rotate", node.attribute("rotate"));
-        query.bindValue(":tmp", node.attribute("tmp"));
-        query.bindValue(":name", node.attribute("name"));
-        query.bindValue(":image", node.attribute("image"));
-
-        if(query.exec())
-            qDebug() << "PD update from web OK";
-        else {
-            qDebug() << "PD update from web err!";
-            qDebug() << query.lastError();
-            mutex_.ulock();
-            return false;
-        }
-    }
-
-    mutex_.ulock();
-    return true;
-}
 
 
 

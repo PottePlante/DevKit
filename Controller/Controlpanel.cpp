@@ -160,5 +160,6 @@ void Controlpanel::updatePlantValue(PlantValues pV)
     //ui_->update(database_->get(newpV.plantInfo_id), newpV);
 
     qDebug() << "Contolpanel : update done id:"<<newpV.id;
+    database_->xmlUpdate();
     return;
 }
