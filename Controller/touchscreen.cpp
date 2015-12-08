@@ -16,8 +16,8 @@ Touchscreen::Touchscreen(QWidget *parent) :
     ui(new Ui::Touchscreen)
 {
     ui->setupUi(this);
-    //setWindowFlags(Qt::CustomizeWindowHint);
-    //QWidget::showFullScreen();
+    setWindowFlags(Qt::CustomizeWindowHint);
+    QWidget::showFullScreen();
 
     space_ = new QSpacerItem(120, 50);
     qDebug() << "touchscreen : running";
@@ -199,7 +199,7 @@ void Touchscreen::updateStatusPage()
 {
     int col = 0;
     int row = 0;
-    for(uint i = 0; i < 6; i++)
+    for(uint i = 0; i < 4; i++)
     {
         if(i < list_.size())
         {
@@ -210,17 +210,17 @@ void Touchscreen::updateStatusPage()
             ui->gridLayout->addItem(space_ , row, col);
         }
 
+        col++;
 
-
-        if(col == 3)
-        {
-            col = 0;
-            row++;
-        }
-        else
-        {
-            col++;
-        }
+//        if(col == 3)
+//        {
+//            col = 0;
+//            row++;
+//        }
+//        else
+//        {
+//            col++;
+//        }
 
     }
 }

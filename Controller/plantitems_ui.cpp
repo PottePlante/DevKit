@@ -26,14 +26,16 @@ PlantItems_ui::PlantItems_ui(PlanteInfo pI, PlantValues pV)
     box_ = new QGroupBox(pI.name + " id: " + QString::number(pV.id));
 
     box_->setFixedWidth(120);
-    //box_->setFixedHeight(50);
+    //box_->setFixedHeight(200);
 
 
     water_ = new QProgressBar();
     water_->setMaximum(100);
     water_->setMaximumHeight(10);
     water_->setValue(pV.water);
-    text_ = new QLabel("no info");
+    char buf[70];
+    sprintf(buf, "battery: %d%%\ntmp: %d C\nlight: %d\nmoisture: %d%%", pV.battery, pV.tmp, pV.light, pV.moisture);
+    text_ = new QLabel(QString(buf));
 
     QImageReader reader(pI.image);
 
@@ -106,6 +108,10 @@ bool PlantItems_ui::update(PlanteInfo pI, PlantValues pV)
     }
 
     box_->setTitle(pI.name + " id: " + QString::number(pV.id));
+
+    char buf[70];
+    sprintf(buf, "battery: %d%%\ntmp: %d C\nlight: %d\nmoisture: %d%%", pV.battery, pV.tmp, pV.light, pV.moisture);
+    text_->setText(QString(buf));
 
     water_->setValue(pV.water);
     qDebug() << "done";
