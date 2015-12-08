@@ -103,7 +103,7 @@ void WiFi::handler(char* cMsg)
     tmp[2] = cMsg[14];
     tmp[3] = '\0';
     data_num = tmp;
-    PV.light = data_num.toInt();
+    PV.light = data_num.toInt()*10;
 
     qDebug() << "WiFi handler light: " << PV.light;
 
@@ -112,7 +112,7 @@ void WiFi::handler(char* cMsg)
     tmp[2] = cMsg[19];
     tmp[3] = '\0';
     data_num = tmp;
-    PV.tmp = (data_num.toInt())*10;
+    PV.tmp = data_num.toInt();
 
     qDebug() << "WiFi handler tmp: " << PV.tmp;
 

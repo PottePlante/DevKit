@@ -88,7 +88,7 @@ bool Planteliste::update(PlantValues &PV)
     if(PV.tmp_set >= 0 && PV.tmp_set <= 999)
         if(!execUpdate("tmp_set", PV.tmp_set, PV.id)) { mutex_.unlock(); return false; }
 
-    if(PV.light >= 0 && PV.light <= 999)
+    if(PV.light >= 0 && PV.light <= 9990)
         if(!execUpdate("light", PV.light, PV.id)) { mutex_.unlock(); return false; }
 
     if(PV.battery >= 0 && PV.battery <= 999)
