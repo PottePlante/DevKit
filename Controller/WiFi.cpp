@@ -9,7 +9,7 @@ WiFi::WiFi(int port):
 
 void WiFi::init(Controlpanel * CP)
 {
-    ctlPanel_ = CP;
+    ctlPanel_=CP;
 }
 
 void WiFi::run()
@@ -112,7 +112,7 @@ void WiFi::handler(char* cMsg)
     tmp[2] = cMsg[19];
     tmp[3] = '\0';
     data_num = tmp;
-    PV.tmp = data_num.toInt();
+    PV.tmp = (data_num.toInt())*10;
 
     qDebug() << "WiFi handler tmp: " << PV.tmp;
 

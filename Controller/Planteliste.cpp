@@ -4,17 +4,18 @@
 #include <QSqlDatabase>
 #include <QSqlError>
 #include <QSqlQuery>
-#include <QSqlRecord>
-#include <QSqlField>
-#include <QListWidget>
+//#include <QSqlRecord>
+//#include <QSqlField>
+//#include <QListWidget>
 #include <QString>
-#include <QVariant>
+//#include <QVariant>
 #include <QMutex>
 #include <vector>
 #include "PlanteDatabase.h"
 #include "Planteliste.h"
-#include <algorithm>
-#include <iterator>
+//#include <algorithm>
+//#include <iterator>
+
 
 using namespace std;
 
@@ -228,23 +229,6 @@ void Planteliste::setupPD()
         qDebug() << "setupDB error! - PD" << query.lastError();
     else
         qDebug() << "setupDB done! - PD";
-
-//    query.prepare("SELECT count(*) FROM planteDatabase;");
-//    if (!query.exec())
-//        qDebug() << "setupDB error! - PD" << query.lastError();
-//    else
-//        qDebug() << "setupDB done! - PD";
-//    int test;
-//    test = query.value(0).toInt();
-//    qDebug() << "database size : " << test;
-//    if(test == 0){
-//    query.prepare("INSERT OR IGNORE INTO planteDatabase (id, moisture, rotate, tmp, name, image) "
-//                  "VALUES(1, 50, 0, 24, 'Default', 'plantimage/default.PNG');");
-
-//    if (!query.exec())
-//        qDebug() << "INSERT error! - PD" << query.lastError();
-//    else
-//        qDebug() << "INSERT done! - PD";}
 }
 
 void Planteliste::closeDB()
@@ -269,3 +253,25 @@ bool Planteliste::execUpdate(QString variable, int val, int id)
         return false;
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
