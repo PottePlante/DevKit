@@ -4,17 +4,11 @@
 #include <QSqlDatabase>
 #include <QSqlError>
 #include <QSqlQuery>
-//#include <QSqlRecord>
-//#include <QSqlField>
-//#include <QListWidget>
 #include <QString>
-//#include <QVariant>
 #include <QMutex>
 #include <vector>
 #include "PlanteDatabase.h"
 #include "Planteliste.h"
-//#include <algorithm>
-//#include <iterator>
 
 
 using namespace std;
@@ -188,6 +182,7 @@ void Planteliste::openDB()
 
     setupPL();
     setupPD();
+
 }
 
 void Planteliste::setupPL()
