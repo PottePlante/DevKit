@@ -26,7 +26,6 @@ public:
     Planteliste();
     ~Planteliste();
 
-    //bool set(const PlantValues &pV);                  // det samme som update men ændre kun på de værdier der har set på sig.
     bool add(PlantValues &pV);                          // Tilføje en ny plante, hvis id'et enten er -1 eller et id der ikke findes. Det id den får tilgivet, bliver returneret igennem &pV!(altså pV.id = #nytID)
     bool remove(const int &id);                         // fjerner en plante med et given id, returnere sand hvis planten blev fjernet returnere falsk hvis ikke.
     bool update(PlantValues &pV);                       // opdatere en bestemt plante, hvis fejl returner falsk ellers returner sand.

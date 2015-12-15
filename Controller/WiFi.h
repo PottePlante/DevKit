@@ -21,13 +21,10 @@ public:
     WiFi(int port = 8888);
 
     void init(Controlpanel * CP);
-
     void update(PlantValues);
 
 private slots:
     void run();
-//signals:
-//    void newData(PlantValues);
 private:
     Controlpanel* ctlPanel_;
     int port_;
